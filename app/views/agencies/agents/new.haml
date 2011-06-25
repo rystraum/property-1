@@ -1,0 +1,10 @@
+%h1 New 
+
+= simple_form_for @agent, url: '/agency/agents' do |f|
+  = f.input :email
+  = f.input :password
+  = f.input :password_confirmation
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :phone
+  = f.button :submit

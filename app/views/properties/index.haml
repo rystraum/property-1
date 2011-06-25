@@ -1,0 +1,5 @@
+%h2 All Properties
+
+%ul
+  - @properties.each do |property|
+    %li= link_to property.listings.first.title, property

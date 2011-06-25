@@ -1,0 +1,30 @@
+%h2 New Listing
+
+= simple_form_for @listing do |f|
+
+  = f.input :title
+
+  %h3 Location
+  = f.input :latitude
+  = f.input :longitude
+  
+  %h3 Details
+  = f.input :land_area
+  = f.input :residence_area
+  = f.input :residence_construction
+  = f.input :beach_front
+  = f.input :near_beach
+  = f.input :residence_type
+  
+  %h3 Contact Information
+  = f.input :contact_directly, label: "Provide an alternate contact", hint: "If people should contact someone other than you regarding this property then you should list that person's contact information here."
+  .todo Do not show my contact info
+  #contact_fields
+    = f.input :contact_name
+    = f.input :contact_phone
+    = f.input :contact_email
+    = f.input :contact_note
+  
+  %h3 What is your interest in this property?
+  = f.input :lister_interest, hint: "Are you the owner, an agent, a friend, etc?"
+  = f.button :submit

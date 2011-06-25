@@ -1,10 +1,34 @@
 Site::Application.routes.draw do
-  root :to => "home#index"
+  devise_for :users
+  
+  # Current user/agent resources
+  #
+  
+  resources :listings
+  resources :users
+  
+  # resource :agency, controller: 'agency' do
+  #   resources :agents, controller: 'agency/agents'
+  #   resources :listings, controller: 'agency/listings'
+  # end
+  
+  # Public resources
+  #
+  
+  resources :agencies do
+    resources :agents, controller: 'agencies/agents'
+    resources :listings, controller: 'agencies/listings'
+  end
+  # resources :agencies, only: [:index, :show] do
+  #   resources :agents, controller: 'agencies/agents', only: [:index, :show]
+  #   resources :listings, controller: 'agencies/listings', only: [:index, :show]
+  # end
+
+  resources :properties, only: [:index, :show]
+  
+  root to: "home#index"
 
   get "home/index"
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
@@ -13,9 +37,6 @@ Site::Application.routes.draw do
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
 
   # Sample resource route with options:
   #   resources :products do
@@ -50,13 +71,4 @@ Site::Application.routes.draw do
   #     resources :products
   #   end
 
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
 end

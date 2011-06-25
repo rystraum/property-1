@@ -1,0 +1,2 @@
+module Agencies::ListingsHelper
+end

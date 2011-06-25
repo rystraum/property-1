@@ -1,0 +1,15 @@
+= simple_form_for @u do |f|
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :phone
+  = f.button :submit
+
+- unless @u.agent?
+  %p
+    %strong Create an agency
+  %p If you create an agency, you can add other people to your account.  These agents can then manage properties for you according to the permision you set.
+
+  = simple_form_for Agency.new, url: agency_path do |f|
+    = f.input :name, label: "Agency name"
+    = f.input :phone, label: "Agency phone"
+    = f.button :submit

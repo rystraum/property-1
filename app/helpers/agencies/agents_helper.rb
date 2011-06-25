@@ -1,0 +1,2 @@
+module Agencies::AgentsHelper
+end

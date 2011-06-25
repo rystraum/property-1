@@ -1,0 +1,47 @@
+$font-color: #3B3B3B;
+$light-color: silver;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: $font-color;
+}
+
+
+a { 
+  text-decoration: none;
+}
+
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+#wrapper {
+  width: 980px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+header {
+  background: $light-color;
+  border-bottom: solid 2px darken($light-color, 10%);
+}
+
+content {
+  float: right;
+  width: 580px;
+  margin-top: 30px;
+  padding: 0px 0px 0px 40px;
+}
+
+
+sidebar { 
+  float: left;
+  width: 280px;
+  margin: 0px;
+  padding: 30px 0px 0px 0px;
+}

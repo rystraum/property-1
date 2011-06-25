@@ -1,0 +1,11 @@
+#login.menu
+  %ul
+    - if @u
+      %li= @u.full_name
+      %li= link_to "Account", [:edit, @u]
+      - if @a
+        - if @a.admin?
+          %li= link_to "Agency admin", @g
+      %li= link_to "Sign out", destroy_user_session_path 
+    - else
+      %li= link_to "Sign in", new_user_session_path

@@ -1,0 +1,5 @@
+%h2 Agents
+
+%ul
+  - @agents.each do |agent|
+    %li= link_to agent.full_name, [@agency, agent]

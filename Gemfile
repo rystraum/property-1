@@ -1,11 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.1.0.rc4'
-
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
+gem 'mysql'
 
 # Asset template engines
 gem 'sass-rails', "~> 3.1.0.rc"
@@ -20,11 +16,24 @@ gem 'jquery-rails'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
+gem "carrierwave", "~> 0.5"
+gem "mini_magick"
 
+# Mongoid 2.0.2 has bug with Rails 3.1.0.rc1.  Fix is in Mongoid master.
+# gem "mongoid", "~> 2.0.2"
+# gem "mongoid", :path => "~/dev/opensource/mongoid-mongoid/"
+# gem "mongoid", :git => "http://github.com/mongoid/mongoid.git"
+
+gem "devise", "~> 1.4"
+gem "inherited_resources"
+gem "simple_form", "~> 1.4"
+gem "show_for"
+gem "geocoder"
+gem "cancan"
+
+gem 'ruby-debug19', :require => 'ruby-debug'
+gem "kaminari"
 gem "haml-rails"
-gem "simple_form"
 gem "coffeebeans"
 gem "capistrano"
 gem "nifty-generators", :group => :development

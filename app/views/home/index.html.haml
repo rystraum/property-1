@@ -1,2 +1,7 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+%h2 
+  Properties
+  %span.todo Near You
+  
+%ul
+  - @listings.each do |listing|
+    %li= link_to listing.title, listing.property

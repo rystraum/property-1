@@ -1,0 +1,9 @@
+= simple_form_for @user do |f|
+  -#= f.input :agency_id, :value => @u.agency_id
+  = f.input :email
+  = f.input :password
+  = f.input :password_confirmation
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :phone
+  = f.button :submit

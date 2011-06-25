@@ -1,0 +1,28 @@
+%h2= @listing.title
+
+%strong= listed_by(@listing)
+
+= show_for @listing do |f|
+  = f.attribute :title
+
+  %h3 Location
+  = f.attribute :latitude
+  = f.attribute :longitude
+  
+  %h3 Details
+  = f.attribute :land_area
+  = f.attribute :residence_area
+  = f.attribute :residence_construction
+  = f.attribute :beach_front
+  = f.attribute :near_beach
+  = f.attribute :residence_type
+  
+  %h3 Contact Information
+  = f.attribute :contact_directly
+  = f.attribute :contact_name
+  = f.attribute :contact_phone
+  = f.attribute :contact_email
+  = f.attribute :contact_note
+  
+  %h3 What is your interest in this property?
+  = f.attribute :lister_interest, hint: "Are you the owner, an agent, a friend, etc?"
