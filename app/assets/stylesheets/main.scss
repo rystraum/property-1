@@ -1,6 +1,25 @@
 $font-color: #3B3B3B;
 $light-color: silver;
 
+$very_light_gray: #F3F3F3;
+$light_gray: #D2D2D2;
+$med_gray: gray;
+$dark_gray: #323232;
+
+$very_light_yellow: #FAFFEE;
+$light_yellow: #FFF9D6;
+$dark_blue: #003499;
+$very_light_pink: #FFEFF5;
+$very_light_blue: #F0F3FD;
+
+$light_orange: #FFE684;
+$very_light_orange: #FFF6CD;
+$dark_orange: #D4C06E;
+$light_green: #CEF19A;
+$dark_green: #A5C17C;
+
+
+
 body {
   margin: 0;
   padding: 0;
@@ -27,8 +46,9 @@ a:hover {
 }
 
 header {
-  background: $light-color;
-  border-bottom: solid 2px darken($light-color, 10%);
+  background: $very_light_gray;
+  border-bottom: solid 2px darken($very_light_gray, 10%);
+  margin-bottom: 20px;
 }
 
 content {
@@ -44,4 +64,25 @@ sidebar {
   width: 280px;
   margin: 0px;
   padding: 30px 0px 0px 0px;
+}
+
+#flash {
+  font-weight: bold;
+  margin-bottom: 20px;
+  > div {
+    padding: 15px;
+    border: solid 1px silver;
+    margin-bottom: 8px;
+  }
+  .notice {
+    background: $light_green;
+    border: solid 1px $dark_green;
+  }
+  .alert {
+    background: $light_orange;
+    border: solid 1px $dark_orange;
+  }
+  p {
+    margin-bottom: 0;
+  }
 }
