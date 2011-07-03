@@ -34,9 +34,13 @@ gem "capistrano"
 
 gem "rails3-generators", :group => :development
 
-gem "rspec-rails", :group => [:development, :test]
-gem "cucumber-rails", :group => [:development, :test]
-gem "fabrication", :group => [:development, :test]
-gem "database_cleaner", :group => [:development, :test]
-gem "capybara", :group => [:development, :test]
+group :test do
+  gem "rspec-rails"
+  gem "cucumber-rails"
+  gem "fabrication"
+  gem "faker"
+  gem "database_cleaner"
+  gem "capybara"
+end
+
 gem "therubyracer", :group => :production, :require => "v8"

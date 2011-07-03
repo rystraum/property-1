@@ -1,6 +1,4 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
@@ -15,7 +13,7 @@ class User < ActiveRecord::Base
   end
   
   def agent?
-    # Reloading in case object has been cast to another type
+    # Reload in case object has been 'cast' to another type
     Agent === self.reload
   end
 
