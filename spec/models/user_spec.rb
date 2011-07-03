@@ -2,6 +2,11 @@ require 'spec_helper'
 
 describe User do
   
+  it "should be valid" do
+    user = Fabricate :user
+    user.should be_valid
+  end
+  
   it "should have a full name" do
     user = Fabricate :user, first_name: "Gavin", last_name: "Hughes"
     user.full_name.should == "Gavin Hughes"
