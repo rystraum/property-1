@@ -19,11 +19,6 @@ gem 'jquery-rails'
 gem "carrierwave", "~> 0.5"
 gem "mini_magick"
 
-# Mongoid 2.0.2 has bug with Rails 3.1.0.rc1.  Fix is in Mongoid master.
-# gem "mongoid", "~> 2.0.2"
-# gem "mongoid", :path => "~/dev/opensource/mongoid-mongoid/"
-# gem "mongoid", :git => "http://github.com/mongoid/mongoid.git"
-
 gem "devise", "~> 1.4"
 gem "inherited_resources"
 gem "simple_form", "~> 1.4"
@@ -36,11 +31,12 @@ gem "kaminari"
 gem "haml-rails"
 gem "coffeebeans"
 gem "capistrano"
-gem "nifty-generators", :group => :development
+
 gem "rails3-generators", :group => :development
+
 gem "rspec-rails", :group => [:development, :test]
 gem "cucumber-rails", :group => [:development, :test]
-gem "factory_girl_rails", :group => [:development, :test]
+gem "fabrication", :group => [:development, :test]
 gem "database_cleaner", :group => [:development, :test]
 gem "capybara", :group => [:development, :test]
 gem "therubyracer", :group => :production, :require => "v8"
