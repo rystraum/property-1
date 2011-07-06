@@ -19,11 +19,11 @@ describe Listing do
     end
     
     it "should validate presence of either a selling price or a rental rate" do
-      rental_rates = Listing::RENTAL_TERM_METHODS.inject({}) { |h,m| h.merge!(m => nil) }
+      rental_rates = Listing::RENTAL_TERM_ATTRIBUTES.inject({}) { |h,m| h.merge!(m => nil) }
       listing = Fabricate.build :listing, { selling_price: nil }.merge!(rental_rates)
       
       listing.should_not be_valid
-      listing.errors[:base].should == ["Property must include a selling price or a rental rate."]
+      listing.errors[:base].should == ["Listing must include a selling price or a rental rate."]
       
       listing.selling_price = 100
       listing.should be_valid
@@ -34,6 +34,32 @@ describe Listing do
       listing.rent_per_day = 100
       listing.should be_valid
     end
+    
+    it "should validate presence of either residence or land" do
+      listing = Fabricate.build :listing, residence_construction: nil, land_area: nil
+      
+      listing.should_not be_valid
+      listing.errors[:base].should == ["Listing must include a residence or land."]
+      
+      listing.residence_type = Listing::RESIDENCE_TYPES.first
+      listing.should be_valid
+      
+      listing.residence_type = nil
+      listing.should_not be_valid
+      
+      listing.land_area = 100
+      listing.should be_valid
+    end
+    
+    it "should validate the presence of residence type, construction and area if residence is specified" do
+      listing = Fabricate.build :listing, specify_residence: false
+      listing.should be_valid
+      
+      listing = Fabricate.build :listing, specify_residence: true
+      listing.should_not be_valid
+      listing.errors.count.should == 3
+      (listing.errors.keys - Listing::REQUIRED_RESIDENCE_ATTRIBUTES).should == []
+    end
   end
   
   it "when created should associate itself with a new property if a property association has not been specified" do
@@ -43,6 +69,13 @@ describe Listing do
     property = Fabricate :property
     listing = Fabricate :listing, property: property
     listing.property.should == property
+  end
+  
+  it "when destroyed should destroy its parent property if it was the last listing for that property" do
+    listing = Fabricate :listing
+    property = listing.property
+    listing.destroy
+    property.destroyed?.should be_true
   end
   
   it "should know if it is for sale" do

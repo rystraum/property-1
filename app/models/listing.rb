@@ -2,11 +2,12 @@ class Listing < ActiveRecord::Base
   belongs_to :user
   belongs_to :property
   
+  REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   RESIDENCE_CONSTRUCTIONS = ['Native materials', 'Basic materials', 'Modern construction', 'Elegant']
   RESIDENCE_TYPES = ['House', 'Duplex or other multi-unit home', 'Apartment, flat or condominium', 'Bungalow, chalet or cabin', 'Private room', 'Shared room']
-  RENTAL_TERM_METHODS = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
+  RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
 
-  attr_writer :has_residence, :has_land, :specify_alt_contact
+  attr_writer :specify_residence, :specify_land, :specify_alt_contact
 
   validates_presence_of :user, :latitude, :longitude, :title
   validates_presence_of :property, on: :update
@@ -14,16 +15,17 @@ class Listing < ActiveRecord::Base
   with_options allow_blank: :true do |v|
     v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS
     v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES
-    v.validates_numericality_of :land_area, greater_than: 0
-    v.validates_numericality_of *RENTAL_TERM_METHODS, :selling_price, integer_only: true, greater_than: 0
+    v.validates_numericality_of :land_area, :residence_area, greater_than: 0
+    v.validates_numericality_of *RENTAL_TERM_ATTRIBUTES, :selling_price, integer_only: true, greater_than: 0
   end
   
-  validate :validates_presence_of_alt_contact_phone_or_email
+  validate :validates_presence_of_residence_or_land
   validate :validates_for_sale_or_rent
+  validate :validates_presence_of_alt_contact_phone_or_email
+  validate :validates_presence_of_required_residence_fields
   
-  # TODO: User adding new listing should first determine if the property is already listed. If so, the listing must be associated with the other existing property.
-  #
-  after_create :create_property
+  after_create :create_property_if_none_found
+  after_destroy :destroy_property_if_last_listing
   
   # TODO: How to coerce AR/AM to handle this?
   # TEST!
@@ -55,7 +57,7 @@ class Listing < ActiveRecord::Base
   end
   
   def for_rent?
-    RENTAL_TERM_METHODS.any? {|m| send m}
+    RENTAL_TERM_ATTRIBUTES.any? {|m| send m}
   end
   
   
@@ -65,8 +67,12 @@ class Listing < ActiveRecord::Base
   #       is the same property. Selecting it will apply the property ID to this listing.
   #       For now the mechanism doesn't exist, so we just create new properies for every listing.
   #
-  def create_property
+  def create_property_if_none_found
     Property.create!.listings << self unless property
+  end
+  
+  def destroy_property_if_last_listing
+    property.destroy if property.listings.count == 0
   end
 
   def validates_presence_of_alt_contact_phone_or_email
@@ -77,9 +83,21 @@ class Listing < ActiveRecord::Base
   
   def validates_for_sale_or_rent
     unless for_sale? || for_rent?
-      errors.add(:base, "Property must include a selling price or a rental rate.")
+      errors.add(:base, "Listing must include a selling price or a rental rate.")
     end
   end
-      
+  
+  def validates_presence_of_residence_or_land
+    unless has_residence? || has_land?
+      errors.add(:base, "Listing must include a residence or land.")
+    end
+  end
+  
+  def validates_presence_of_required_residence_fields
+    return unless @specify_residence
+    REQUIRED_RESIDENCE_ATTRIBUTES.each do |attr|
+      errors.add(attr, "is required for a residence listing.")
+    end
+  end
 
 end
