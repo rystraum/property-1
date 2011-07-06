@@ -1,5 +1,10 @@
 require 'spec_helper'
 
 describe Property do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  it "should be valid" do
+    property = Fabricate :property
+    property.should be_valid
+  end
+  
 end

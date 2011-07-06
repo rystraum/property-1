@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :phone
   
-  validates_presence_of :email, :password, :password_confirmation
+  validates_presence_of :email
+  validates_presence_of :password, :password_confirmation, on: :create
   
   has_many :listings
   

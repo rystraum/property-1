@@ -52,7 +52,7 @@ module Site
       g.form_builder :simple_form
       g.template_engine :haml
       g.test_framework :rspec, :views => false, :fixture => true
-      g.fixture_replacement :factory_girl, :dir => 'spec/factories'
+      g.fixture_replacement :fabrication, :dir => 'spec/factories'
     end
 
   end

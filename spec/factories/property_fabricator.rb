@@ -1,0 +1,2 @@
+Fabricator :property do
+end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
   
   it "should be valid" do
-    user = Fabricate :user
+    user = Fabricate.build :user
     user.should be_valid
   end
   
@@ -12,7 +12,7 @@ describe User do
     user.full_name.should == "Gavin Hughes"
   end
   
-  it "should know if it is an agent, even if 'cast'" do
+  it "should know if it is an agent" do
     user = Fabricate :agent
     user.agent?.should be_true
   end

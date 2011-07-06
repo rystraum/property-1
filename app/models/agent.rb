@@ -2,10 +2,10 @@ class Agent < User
   
   belongs_to :agency
   
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :agency_id, :first_name, :last_name
   
   def admin?
-    agency.admin_id == id
+    agency.admin == self
   end
   
 end
