@@ -9,7 +9,7 @@ describe Listing do
   
   describe "validations" do
     it "should validate that an alt contact phone or email exists if an alt contact is specified" do
-      listing = Fabricate.build :listing, specify_alt_contact: true, contact_phone: nil, contact_email: nil
+      listing = Fabricate.build :listing, includes_alt_contact_values: true, contact_phone: nil, contact_email: nil
       
       listing.should_not be_valid
       listing.errors[:base].should == ["Alternate contact must have a phone number or email."]
@@ -36,29 +36,51 @@ describe Listing do
     end
     
     it "should validate presence of either residence or land" do
-      listing = Fabricate.build :listing, residence_construction: nil, land_area: nil
-      
+      listing = Fabricate.build :no_residence_or_land_invalid_listing
       listing.should_not be_valid
       listing.errors[:base].should == ["Listing must include a residence or land."]
       
-      listing.residence_type = Listing::RESIDENCE_TYPES.first
+      listing = Fabricate.build :residence_listing
       listing.should be_valid
       
-      listing.residence_type = nil
-      listing.should_not be_valid
-      
-      listing.land_area = 100
+      listing = Fabricate.build :land_listing
       listing.should be_valid
     end
     
-    it "should validate the presence of residence type, construction and area if residence is specified" do
-      listing = Fabricate.build :listing, specify_residence: false
+    describe "on required residence attributes" do
+      it "should not be valid when all are missing" do
+        listing = Fabricate.build :listing, includes_residence_values: false
+        listing.should be_valid
+      
+        listing.includes_residence_values = true
+        listing.should_not be_valid
+        (listing.errors.keys - Listing::REQUIRED_RESIDENCE_ATTRIBUTES).should == []
+      end
+      
+      it "should not be valid when one is missing" do
+        listing = Fabricate.build :listing, includes_residence_values: false
+        listing.should be_valid
+        
+        listing.residence_area = 100
+        missing_attributes = Listing::REQUIRED_RESIDENCE_ATTRIBUTES - [:residence_area]
+        listing.should_not be_valid
+        (listing.errors.keys - missing_attributes).should == []
+      end
+      
+      it "should be valid when all are present, even when residence values specified as not included" do
+        listing = Fabricate.build :residence_listing, includes_residence_values: false
+        listing.should be_valid
+      end
+    end
+    
+    
+    it "should validate presence of required land attributes if land is specified" do
+      listing = Fabricate.build :land_listing, includes_land_values: false
       listing.should be_valid
       
-      listing = Fabricate.build :listing, specify_residence: true
+      listing = Fabricate.build :no_residence_or_land_invalid_listing, includes_land_values: true
       listing.should_not be_valid
-      listing.errors.count.should == 3
-      (listing.errors.keys - Listing::REQUIRED_RESIDENCE_ATTRIBUTES).should == []
+      (listing.errors.keys - Listing::REQUIRED_LAND_ATTRIBUTES).should == []
     end
   end
   
@@ -94,20 +116,42 @@ describe Listing do
     listing.for_rent?.should be_true
   end
   
-  it "should know if it has a residence" do
-    listing = Fabricate.build :listing, residence_type: nil
-    listing.has_residence?.should be_false
+  describe "required residence values" do
+    before(:each) do
+      @listing = Fabricate.build :listing, includes_residence_values: false
+      Listing::REQUIRED_RESIDENCE_ATTRIBUTES.each { |a| @listing.send("#{a}=", nil) }
+      @listing.includes_residence_values.should be_false
+    end
     
-    listing.residence_type = Listing::RESIDENCE_TYPES.first
-    listing.has_residence?.should be_true
+    it "should be considered included if specified as included, even when no values are present" do
+      @listing.includes_residence_values = true
+      @listing.includes_residence_values.should be_true # Method considers the values of attributes, ergo the test.
+    end
+    
+    it "should be considered included even if not specified as included when a value is present" do  
+      @listing.includes_residence_values = false
+      @listing.residence_area = 100
+      @listing.includes_residence_values.should be_true
+    end
   end
   
-  it "should know if it has land" do
-    listing = Fabricate.build :listing, land_area: nil
-    listing.has_land?.should be_false
+  describe "required land values" do
+    before(:each) do
+      @listing = Fabricate.build :listing, includes_land_values: false
+      Listing::REQUIRED_LAND_ATTRIBUTES.each { |a| @listing.send("#{a}=", nil) }
+      @listing.includes_land_values.should be_false
+    end
     
-    listing.land_area = 100
-    listing.has_land?.should be_true
+    it "should be considered included if specified as included, even when no values are present" do
+      @listing.includes_land_values = true
+      @listing.includes_land_values.should be_true # Method considers the values of attributes, ergo the test.
+    end
+    
+    it "should be considered included even if not specified as included when a value is present" do  
+      @listing.includes_land_values = false
+      @listing.land_area = 100
+      @listing.includes_land_values.should be_true
+    end
   end
   
   it "should know if it has an alt contact" do

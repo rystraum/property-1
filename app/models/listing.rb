@@ -1,13 +1,16 @@
 class Listing < ActiveRecord::Base
+  include FormHelpers
+  
   belongs_to :user
   belongs_to :property
   
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
+  REQUIRED_LAND_ATTRIBUTES = [:land_area]
   RESIDENCE_CONSTRUCTIONS = ['Native materials', 'Basic materials', 'Modern construction', 'Elegant']
   RESIDENCE_TYPES = ['House', 'Duplex or other multi-unit home', 'Apartment, flat or condominium', 'Bungalow, chalet or cabin', 'Private room', 'Shared room']
   RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
 
-  attr_writer :specify_residence, :specify_land, :specify_alt_contact
+  attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values
 
   validates_presence_of :user, :latitude, :longitude, :title
   validates_presence_of :property, on: :update
@@ -22,7 +25,8 @@ class Listing < ActiveRecord::Base
   validate :validates_presence_of_residence_or_land
   validate :validates_for_sale_or_rent
   validate :validates_presence_of_alt_contact_phone_or_email
-  validate :validates_presence_of_required_residence_fields
+  validate :validates_presence_of_required_residence_values
+  validate :validates_presence_of_required_land_values
   
   after_create :create_property_if_none_found
   after_destroy :destroy_property_if_last_listing
@@ -31,19 +35,18 @@ class Listing < ActiveRecord::Base
   # TEST!
   #
   # For form handling.
-  def specify_alt_contact
-    @specify_alt_contact = nil if @specify_alt_contact == "0"
-    @specify_alt_contact || has_alt_contact?
+  def includes_alt_contact_values
+    check_box_checked?(@includes_alt_contact_values) || has_alt_contact?
   end
   
   # TODO: Nillify blanks
   #
-  def has_residence?
-    !residence_type.blank?
+  def includes_residence_values
+    check_box_checked?(@includes_residence_values) || REQUIRED_RESIDENCE_ATTRIBUTES.any? { |a| !send(a).blank? }
   end
   
-  def has_land?
-    !!land_area
+  def includes_land_values
+    check_box_checked?(@includes_land_values) || REQUIRED_LAND_ATTRIBUTES.any? { |a| !send(a).blank? }
   end
   
   # TODO: Nillify blanks
@@ -76,7 +79,7 @@ class Listing < ActiveRecord::Base
   end
 
   def validates_presence_of_alt_contact_phone_or_email
-    if specify_alt_contact && !has_alt_contact?
+    if includes_alt_contact_values && !has_alt_contact?
       errors.add(:base, "Alternate contact must have a phone number or email.")
     end
   end
@@ -88,15 +91,22 @@ class Listing < ActiveRecord::Base
   end
   
   def validates_presence_of_residence_or_land
-    unless has_residence? || has_land?
+    unless includes_residence_values || includes_land_values
       errors.add(:base, "Listing must include a residence or land.")
     end
   end
   
-  def validates_presence_of_required_residence_fields
-    return unless @specify_residence
-    REQUIRED_RESIDENCE_ATTRIBUTES.each do |attr|
-      errors.add(attr, "is required for a residence listing.")
+  def validates_presence_of_required_residence_values
+    return unless includes_residence_values
+    REQUIRED_RESIDENCE_ATTRIBUTES.each do |attrib|
+      errors.add(attrib, "is required for a residence listing.") unless !send(attrib).blank?
+    end
+  end
+  
+  def validates_presence_of_required_land_values
+    return unless includes_land_values
+    REQUIRED_LAND_ATTRIBUTES.each do |attrib|
+      errors.add(attrib, "is required for a land listing.") unless !send(attrib).blank?
     end
   end
 
