@@ -25,6 +25,7 @@ gem "simple_form", "~> 1.4"
 gem "show_for"
 gem "geocoder"
 gem "cancan"
+gem "nilify_blanks"
 
 gem 'ruby-debug19', :require => 'ruby-debug'
 gem "kaminari"
@@ -39,7 +40,7 @@ group :test do
   gem "cucumber-rails"
   gem "fabrication"
   gem "faker"
-  gem "database_cleaner"
+  # gem "database_cleaner"
   gem "capybara"
 end
 
