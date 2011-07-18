@@ -6,6 +6,7 @@ Site::Application.routes.draw do
   
   resources :listings
   resources :users
+  resources :searches
   
   # resource :agency, controller: 'agency' do
   #   resources :agents, controller: 'agency/agents'
@@ -19,6 +20,7 @@ Site::Application.routes.draw do
     resources :agents, controller: 'agencies/agents'
     resources :listings, controller: 'agencies/listings'
   end
+
   # resources :agencies, only: [:index, :show] do
   #   resources :agents, controller: 'agencies/agents', only: [:index, :show]
   #   resources :listings, controller: 'agencies/listings', only: [:index, :show]
@@ -26,9 +28,7 @@ Site::Application.routes.draw do
 
   resources :properties, only: [:index, :show]
   
-  root to: "home#index"
-
-  get "home/index"
+  root to: "listings#index"
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
