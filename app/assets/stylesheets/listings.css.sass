@@ -1,0 +1,92 @@
+$very_light_gray: #F3F3F3
+$light_gray: #D2D2D2
+$med_gray: gray
+$dark_gray: #323232
+
+$pink: #FF0080
+$gold: #FBAC0C
+$ocean_blue: #4F6BAE
+$land_green: #A5C888
+
+
+// Temp
+li, ul
+  margin: 0
+  padding: 0
+li
+  list-style: none
+
+ul.tags
+  li
+    background: gray
+    color: white
+    display: inline-block
+    padding: 3px
+    font-size: 0.9em
+
+body.listings
+
+  // INDEX
+
+  #find_exhort, #list_exhort
+    margin-bottom: 30px
+    font-weight: bold
+    font-size: 1.1em
+  
+  #right_column
+    width: 340px
+    float: right
+  
+  #listing_id
+    width: 100px      
+    
+    
+  #left_column
+    width: 600px
+    float: left
+    
+    #list_exhort
+      a
+        text-decoration: underline
+      a:hover
+        text-decoration: none
+  
+    #map_canvas
+      height: 400px
+      width: 100%
+      margin: 0 0 20px 0
+      background: $very_light_gray
+
+    ul.listings
+      padding: 0
+      margin: 0
+      font-size: 13px
+      .label
+        color: $ocean_blue
+      // The listing item container
+      > li
+        display: inline-block
+        width: 270px
+        margin: 0
+        padding: 10px
+        list-style: none
+        border-bottom: solid 1px $light_gray
+        background: $very_light_gray
+        height: 500px
+        &.listing_spacer
+          padding: 0
+          margin: 0
+          width: 0px
+          height: 0
+          background: red
+        img
+          height: 150px
+          width: 270px
+        li
+          border-bottom: solid 1px #fff
+          padding-top: 6px
+          padding-bottom: 7px
+        p.caption
+          font-weight: bold
+          color: $ocean_blue
+          margin-bottom: 10px 

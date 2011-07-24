@@ -1,5 +1,9 @@
 %h2= @listing.title
 
+-# Here's the syntax I want: 
+-# %p= link_to "Edit", [:edit, @listing] if current_user.can :edit, @listing
+%p= link_to "Edit", [:edit, @listing]
+
 %strong= listed_by(@listing)
 
 = show_for @listing do |f|
@@ -16,13 +20,18 @@
   = f.attribute :beach_front
   = f.attribute :near_beach
   = f.attribute :residence_type
+  = f.attribute :description
   
-  %h3 Contact Information
-  = f.attribute :contact_directly
-  = f.attribute :contact_name
-  = f.attribute :contact_phone
-  = f.attribute :contact_email
-  = f.attribute :contact_note
+  %h3 Price
+  = f.attribute :selling_price
+  = f.attribute :rent_per_day
+
+  - if @listing.has_alt_contact?
+    %h3 Contact Information
+    = f.attribute :contact_name
+    = f.attribute :contact_phone
+    = f.attribute :contact_email
+    = f.attribute :contact_note
   
   %h3 What is your interest in this property?
   = f.attribute :lister_interest, hint: "Are you the owner, an agent, a friend, etc?"

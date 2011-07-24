@@ -2,6 +2,42 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$SHORT_INPUT_WIDTH: 100px;
+
 body.listings {
-  // Place scoped styles here
+  
+  label[for='listing_contact_note'] {
+    width: 100%
+  }
+  
+  #coordinates {
+    div.input {
+      width: $SHORT_INPUT_WIDTH;
+      float: left;
+    }
+  }
+  
+  #listing_residence_area, #listing_land_area {
+    width: 60px;
+  }
+  
+  #listing_selling_price {
+    width: $SHORT_INPUT_WIDTH;
+  }
+  
+  #rental_rates {
+    input {
+      width: $SHORT_INPUT_WIDTH;
+    }
+    
+    // Prevent the labels from breaking flow.
+    div.input {
+      overflow: hidden;
+    }
+  }
+  
+  #listing_contact_note {
+    height: 100px;
+    width: 100%;
+  }
 }

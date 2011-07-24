@@ -1,14 +1,29 @@
 class Listing < ActiveRecord::Base
   include FormHelpers
+
+  nilify_blanks
+  geocoded_by :address
   
   belongs_to :user
   belongs_to :property
   
+  RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
+  RESIDENCE_CONSTRUCTIONS = {
+    'native'  => 'Native materials', 
+    'basic'   => 'Basic materials', 
+    'modern'  => 'Modern construction', 
+    'elegant' => 'Elegant'
+  }
+  RESIDENCE_TYPES = {
+    'house'        => "House",
+    'apartment'    => "Apartment, flat or condominium", 
+    'multi_unit'   => "Duplex or other multi-unit home",
+    'chalet'       => "Bungalow, chalet or cabin", 
+    'private_room' => "Private room or 'bachelor pad'",
+    'shared_room'  =>  "Shared room"
+  }
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]
-  RESIDENCE_CONSTRUCTIONS = ['Native materials', 'Basic materials', 'Modern construction', 'Elegant']
-  RESIDENCE_TYPES = ['House', 'Duplex or other multi-unit home', 'Apartment, flat or condominium', 'Bungalow, chalet or cabin', 'Private room', 'Shared room']
-  RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
 
   attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values
 
@@ -16,8 +31,8 @@ class Listing < ActiveRecord::Base
   validates_presence_of :property, on: :update
 
   with_options allow_blank: :true do |v|
-    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS
-    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES
+    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys
+    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES.keys
     v.validates_numericality_of :land_area, :residence_area, greater_than: 0
     v.validates_numericality_of *RENTAL_TERM_ATTRIBUTES, :selling_price, integer_only: true, greater_than: 0
   end
@@ -31,28 +46,35 @@ class Listing < ActiveRecord::Base
   after_create :create_property_if_none_found
   after_destroy :destroy_property_if_last_listing
   
-  # TODO: How to coerce AR/AM to handle this?
-  # TEST!
-  #
   # For form handling.
+  #
+  
   def includes_alt_contact_values
     check_box_checked?(@includes_alt_contact_values) || has_alt_contact?
   end
   
-  # TODO: Nillify blanks
-  #
   def includes_residence_values
-    check_box_checked?(@includes_residence_values) || REQUIRED_RESIDENCE_ATTRIBUTES.any? { |a| !send(a).blank? }
+    check_box_checked?(@includes_residence_values) || REQUIRED_RESIDENCE_ATTRIBUTES.any? { |a| send a }
   end
   
   def includes_land_values
-    check_box_checked?(@includes_land_values) || REQUIRED_LAND_ATTRIBUTES.any? { |a| !send(a).blank? }
+    check_box_checked?(@includes_land_values) || REQUIRED_LAND_ATTRIBUTES.any? { |a| send a }
   end
   
-  # TODO: Nillify blanks
-  #
+  ###
+  
+  # TEST
+  def has_residence?
+    includes_residence_values
+  end
+  
+  # TEST
+  def has_land?
+    includes_land_values
+  end
+  
   def has_alt_contact?
-    !(contact_phone.blank? && contact_email.blank?)
+    !!(contact_phone || contact_email)
   end
   
   def for_sale?
@@ -63,7 +85,11 @@ class Listing < ActiveRecord::Base
     RENTAL_TERM_ATTRIBUTES.any? {|m| send m}
   end
   
+  def geocoded?
+    !!(latitude && longitude)
+  end
   
+
   protected
   
   # TODO: If very nearby properties exist, the UI needs to give the user an opportunity to determine if one of these
@@ -98,15 +124,15 @@ class Listing < ActiveRecord::Base
   
   def validates_presence_of_required_residence_values
     return unless includes_residence_values
-    REQUIRED_RESIDENCE_ATTRIBUTES.each do |attrib|
-      errors.add(attrib, "is required for a residence listing.") unless !send(attrib).blank?
+    REQUIRED_RESIDENCE_ATTRIBUTES.each do |a|
+      errors.add(a, "is required for a residence listing.") unless send a
     end
   end
   
   def validates_presence_of_required_land_values
     return unless includes_land_values
-    REQUIRED_LAND_ATTRIBUTES.each do |attrib|
-      errors.add(attrib, "is required for a land listing.") unless !send(attrib).blank?
+    REQUIRED_LAND_ATTRIBUTES.each do |a|
+      errors.add(a, "is required for a land listing.") unless send a
     end
   end
 

@@ -1,0 +1,23 @@
+- content_for :layout do
+  - @sidebar = false
+
+#left_column
+  #list_exhort
+    = link_to "List a property", [:new, :listing]
+    for free!
+
+  #map_canvas
+  
+  %ul.listings
+    = render partial: 'listing', collection: @listings #, spacer_template: 'listing_spacer'
+    
+#right_column 
+  #find_exhort
+    Find a property
+    = text_field_tag :listing_id, nil, placeholder: "Listing ID"
+    %button(id='find_listing') Go
+
+  :coffeescript
+      $('#find_listing').click ->
+        // TODO: Add .strip()
+        window.location.href = "#{listings_path}/" + $('#listing_id').val()

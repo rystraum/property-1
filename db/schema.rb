@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110622024858) do
+ActiveRecord::Schema.define(:version => 20110708074153) do
 
   create_table "agencies", :force => true do |t|
     t.string   "name"
@@ -21,18 +21,27 @@ ActiveRecord::Schema.define(:version => 20110622024858) do
   end
 
   create_table "listings", :force => true do |t|
-    t.float    "latitude"
-    t.float    "longitude"
-    t.string   "title"
     t.integer  "user_id"
     t.integer  "property_id"
+    t.string   "title"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "address"
     t.integer  "land_area"
     t.integer  "residence_area"
     t.string   "residence_construction"
     t.boolean  "beach_front"
     t.boolean  "near_beach"
     t.string   "residence_type"
-    t.boolean  "contact_directly"
+    t.text     "description"
+    t.integer  "selling_price"
+    t.integer  "rent_per_day"
+    t.integer  "rent_per_week"
+    t.integer  "rent_per_month"
+    t.integer  "rent_per_month_biannual_contract"
+    t.integer  "rent_per_month_annual_contract"
+    t.date     "available_on"
+    t.boolean  "anonymous"
     t.string   "contact_name"
     t.string   "contact_phone"
     t.string   "contact_email"
@@ -45,6 +54,39 @@ ActiveRecord::Schema.define(:version => 20110622024858) do
   add_index "listings", ["user_id"], :name => "index_listings_on_user_id"
 
   create_table "properties", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "searches", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "range"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.float    "sw_lat"
+    t.float    "sw_lng"
+    t.float    "ne_lat"
+    t.float    "ne_lng"
+    t.boolean  "for_sale"
+    t.boolean  "for_rent"
+    t.boolean  "native"
+    t.boolean  "basic"
+    t.boolean  "modern"
+    t.boolean  "elegant"
+    t.boolean  "house"
+    t.boolean  "apartment"
+    t.boolean  "multi_unit"
+    t.boolean  "chalet"
+    t.boolean  "private_room"
+    t.boolean  "shared_room"
+    t.boolean  "land"
+    t.boolean  "commercial"
+    t.string   "rental_term"
+    t.integer  "for_sale_min_price"
+    t.integer  "for_sale_max_price"
+    t.integer  "for_rent_min_price"
+    t.integer  "for_rent_max_price"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

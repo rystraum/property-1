@@ -1,12 +1,17 @@
 class ListingsController < ApplicationController
-  before_filter :authenticate_user!
-  
+  before_filter :authenticate_user!, :except => [:index, :show]
+
+  # This should be listing with unique property_ids.  Where duplicate IDs an algorithm for the best choice for 
+  # inclusion should exist that considers completeness of listing, quantitiy of pictures, reviews, ratings, etc.
   def index
-    @listings = @u.listings
+    # @search = Search.new(session[:search] || Search::DEFAULT_PARAMS)
+    @search = Search.new Search::DEFAULT_PARAMS
+    @listings = @search.listings
+    @listings = Listing.all
   end
   
   def show
-    @listing = @u.listings.find(params[:id])
+    @listing = Listing.find(params[:id])
   end
   
   def new
@@ -14,7 +19,7 @@ class ListingsController < ApplicationController
   end
   
   def create
-    @listing = @u.listings.build(params[:listing])
+    @listing = @u.listings.build(params[:listing])    
     
     if @listing.save
       redirect_to @listing
@@ -22,5 +27,18 @@ class ListingsController < ApplicationController
       render :new
     end
   end
+
+  def edit
+    @listing = @u.listings.find(params[:id])
+  end
   
+  def update
+    @listing = @u.listings.find(params[:id])
+    
+    if @listing.update_attributes(params[:listing])
+      redirect_to @listing
+    else
+      render :edit
+    end
+  end
 end

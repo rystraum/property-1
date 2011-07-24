@@ -1,0 +1,160 @@
+$font-color: #3B3B3B
+$light-color: silver
+
+$very_light_gray: #F3F3F3
+$light_gray: #D2D2D2
+$med_gray: gray
+$dark_gray: #323232
+
+$very_light_yellow: #FAFFEE
+$light_yellow: #FFF9D6
+$dark_blue: #003499
+$very_light_pink: #FFEFF5
+$very_light_blue: #F0F3FD
+$light_blue: #14BBEA
+$pink: #FF0080
+$gold: #FBAC0C
+$ocean_blue: #4F6BAE
+$land_green: #A5C888
+
+$light_orange: #FFE684
+$very_light_orange: #FFF6CD
+$dark_orange: #D4C06E
+$light_green: #CEF19A
+$dark_green: #A5C17C
+
+// Sticky Footer
+// Based on a [blog post by Ryan Fait](http://ryanfait.com/resources/footer-stick-to-bottom-of-page/).
+// Must be mixed into the top level of your stylesheet.
+// Footer element must be outside of root wrapper element.
+// Footer must be a fixed height.
+
+$footer-height: 50px
+
+html, body 
+  height: 100% 
+
+#outer_wrapper
+  clear: both
+  min-height: 100%
+  height: auto !important
+  height: 100%
+  margin-bottom: -$footer-height
+  #outer_wrapper_bottom
+    height: $footer-height  
+footer
+  clear: both
+  position: relative
+  height: $footer-height  
+
+body 
+  font-family: Verdana, Arial, Tahoma
+  font-size: 15px
+  margin: 0 auto
+  padding: 0
+  color: #7e7e7e
+
+a, a:visited
+  text-decoration: none
+  color: $pink
+
+
+
+a:hover
+  background: $gold
+
+#outer_wrapper
+  #outer_wrapper_top
+    border-top: solid 5px $ocean_blue
+    background: $very_light_gray
+    height: 65px
+    
+
+#inner_wrapper 
+  width: 980px
+  margin: 0 auto
+  padding: 0
+
+
+#login 
+  float: right
+  ul 
+    list-style: none
+    li 
+      display: inline
+      margin-right: 15px
+
+header
+  height: 82px
+  margin-top: -57px
+
+
+#logo
+  float: left
+  // Stub for pretty font
+  font-size: 30px
+  a span.c
+    color: $ocean_blue
+  a span.p
+    color: $pink
+  a:hover
+    background: none
+  h1
+    margin-top: 0
+    font-size: 13px
+    font-weight: bold
+    font-family: georgia
+    
+
+content 
+  width: 580px
+  padding: 0px 0px 0px 40px
+
+
+
+sidebar  
+  float: left
+  width: 280px
+  margin: 0px
+  padding: 30px 0px 0px 0px
+
+
+footer
+  background: $very_light_gray
+  #footer_content
+    padding-top: 15px
+    margin: 0 auto
+    width: 980px
+
+
+input[type='text'], input[type='submit'], select
+  height: 22px
+
+
+#flash 
+  font-weight: bold
+  margin-bottom: 20px
+  > div 
+    padding: 15px
+    border: solid 1px silver
+    margin-bottom: 8px
+  
+  .notice 
+    background: $light_green
+    border: solid 1px $dark_green
+  
+  .alert 
+    background: $light_orange
+    border: solid 1px $dark_orange
+  
+  p 
+    margin-bottom: 0
+  
+
+
+.error_messages 
+  background: #ffc0c3
+  padding: 10px
+  margin-bottom: 40px
+
+

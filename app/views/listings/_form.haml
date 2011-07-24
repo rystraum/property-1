@@ -1,0 +1,85 @@
+-# = content_for :head do
+-#   %script( type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false" )
+
+= simple_form_for @listing do |f|
+
+  = f.error_messages
+  
+  = f.input :title
+  
+  %h3 Address
+  #coordinates.clearfix
+    %br
+    = f.input :latitude, as: :string
+    = f.input :longitude, as: :string
+  
+  %h3 Details
+  .input
+    %abbr(title='required') *
+    This listing contains
+    %p 
+      #{f.check_box :includes_residence_values} a residence &nbsp; &nbsp;
+      #{f.check_box :includes_land_values} land
+  
+  #residence_fields
+    %fieldset
+      %legend Residence
+      - f.with_options required: true do |w|
+        = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
+        = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
+        = w.input :residence_area, label: 'Area' do
+          #{w.input_field :residence_area, as: :string} #{m2}
+        
+  #land_fields
+    %fieldset
+      %legend Land
+      = f.input :land_area, label: 'Area', required: true do
+        #{f.input_field :land_area, as: :string} #{m2}
+   
+  %h3 Description
+  = f.input :description, label: false
+  
+  %h4 Special Features
+  = f.input :beach_front
+  = f.input :near_beach
+         
+  %h3 For Sale
+  .instruction 
+    %p Add a selling price if the property is for sale.  
+    %p Prices are in Philippines pesos.
+  = f.input :selling_price, as: :string, input_html: { maxlength: 11 }
+  
+  %h3 For Rent
+  .instruction 
+    %p Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer.
+    %p Prices are in Philippine pesos.
+  #rental_rates
+    %h4 Rental Rates
+    - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
+      = w.input :rent_per_day, label: "Daily"
+      = w.input :rent_per_week, label: "Weekly"
+      = w.input :rent_per_month, label: "Monthly"
+      = w.input :rent_per_month_biannual_contract, label: "Monthly with a 6-month contract"
+      = w.input :rent_per_month_annual_contract, label: "Monthly with a 1-year contract"
+  
+  %h4 Availability
+  = f.input :available_on, hint: "If the property is not currently available, on what date do you expect it to become available?"
+  
+  
+  %h3 Contact Information
+  
+  = f.input :includes_alt_contact_values, as: :boolean, label: "Provide an alternate contact", hint: "If people should contact someone other than you regarding this property then you should check this box and provide an alternate contact."
+  #contact_fields
+    = f.input :anonymous, label: "List anonymously", hint: "List the property anonymously if people should always contact the alternate contact instead of you.  This will hide your contact details."
+    %h4 Alternate Contact
+    = f.input :contact_name, label: "Name"
+    .instruction
+      %abbr(title='required') *
+      A phone number or email is required.
+    = f.input :contact_phone, label: "Phone"
+    = f.input :contact_email, label: "Email"
+    = f.input :contact_note, label: "Additional contact information", hint: "If you need to provide additional information to help people contact this person, add it here."
+  
+  %h3 What is your interest in this property?
+  = f.input :lister_interest, label: false, hint: "Are you the owner, an agent, a friend, etc?"
+  = f.button :submit

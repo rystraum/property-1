@@ -1,7 +1,7 @@
 Site::Application.routes.draw do
   devise_for :users
   
-  # Current user/agent resources
+  # Current user or agent resources
   #
   
   resources :listings

@@ -1,51 +1,62 @@
 !!!
 %html
-
   %head
-    %title
-      = yield(:title) || "Untitled"
+    %title= yield(:title) || "Untitled"
     %meta{"http-equiv"=>"Content-Type", content: "text/html; charset=utf-8"}/
+    = yield :head
     = stylesheet_link_tag "application"
     = javascript_include_tag "application" 
     = csrf_meta_tag
-    = yield(:head)
+    
 
-  %body
-    #wrapper
-      %header
-        %h1= link_to 'ClearProperty', root_path
-        = render 'login'  
+  %body( class="#{ params[:controller].parameterize }" )
+    #outer_wrapper
+      #outer_wrapper_top
+      #inner_wrapper
+        %header
+          #logo
+            = link_to "<span class='c'>Clear</span><span class='p'>Property</span>".html_safe, root_path
+            %h1 Property for sale and for rent in the Philippines
+          
+          = render 'login'
+          
+        - unless flash.empty?
+          #flash
+            - flash.each do |name, msg|
+              = content_tag :div, msg, class: name
 
-      #flash
-        - flash.each do |name, msg|
-          = content_tag :div, msg, class: name
+            - if show_title?
+              %h1= yield :title
 
-        - if show_title?
-          %h1= yield(:title)
-
-      %content
-        = yield
-      %sidebar
-        - unless @u
-          %h2 Menu
-          %ul
-            %li= link_to "List your property for sale or rent", [:new, :listing]
-        - else
-          %h2
-            - if @a
-              #{@g.name}
+        %content
+          = yield
+        
+        - unless @sidebar == false
+          %sidebar
+            - unless @u
+              %h2 Menu
+              %ul
+                %li= link_to "List your property for sale or rent", [:new, :listing]
             - else
-              Menu
-          %ul
-            %li= link_to "New property", [:new, :listing]
-            %li= link_to "Your properties", :listings
-            %li= link_to "Agency properties", [@g, :listings]
-            %li= link_to "Agent index", [@g, :agents]
-            
-          - if admin?
-            %h3 Admin
+              %h2
+                - if @a
+                  #{@g.name}
+                - else
+                  Menu
+              %ul
+                %li= link_to "New property", [:new, :listing]
+                %li= link_to "Your properties", :listings
+                %li= link_to "Agency properties", [@g, :listings]
+                %li= link_to "Agent index", [@g, :agents]
+          
+              - if admin?
+                %h3 Admin
+                %ul
+                  %li= link_to "Add a new agent", [:new, @g, :agent]
+            %h2 Search
             %ul
-              %li= link_to "Add a new agent", [:new, @g, :agent]
-        %h2 Search
-        %ul
-          %li= link_to "All Properties", :properties
+              %li= link_to "All Properties", :properties
+    %footer
+      #footer_content
+        © 2011 ClearProperty
+      -# = yield :scripts

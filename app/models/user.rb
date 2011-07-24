@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :password_confirmation, on: :create
   
   has_many :listings
+  has_many :searches
   
   def full_name
     [first_name, last_name].join(" ")

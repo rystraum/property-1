@@ -1,0 +1,49 @@
+%li
+  = link_to image_tag('defaults/default_property.jpg'), listing
+  
+  %p.caption
+    - if listing.has_residence?
+      = Listing::RESIDENCE_TYPES[listing.residence_type]
+      
+  %ul
+    %li= link_to "Show", listing
+  
+  %ul
+    - if listing.has_residence?
+      %li
+        %span.label Construction:
+        = Listing::RESIDENCE_CONSTRUCTIONS[listing.residence_construction].downcase
+      %li
+        %span.label Size:
+        = listing.residence_area
+        = m2
+      %li
+        %span.label Bedrooms:
+        1
+    
+    - if listing.has_land?
+      %li
+        Land area
+        = listing.land_area
+  
+  %ul
+    %li
+      %span.label For sale:
+      = listing.selling_price
+    %li
+      %span.label For rent:
+      200 #{listing.rent_per_day}/day
+      ,
+      #{listing.rent_per_month}/month
+    
+    - if listing.available_on > Time.now.to_date
+      %li
+        Available on
+        = listing.available_on
+  
+  %ul.tags
+    %li beachfront
+    %li commercial
+  
+  %p
+    = listing.description
