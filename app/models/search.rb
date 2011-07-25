@@ -21,7 +21,7 @@ class Search < ActiveRecord::Base
   }
   MAP_OPTIONS = { 
     panControl: false,
-    center: [12,122],
+    center: [12,121.5],
     zoom: 6,
     minZoom: 5,
     scaleControl: true,
