@@ -15,6 +15,9 @@
       {
         action: 'init'
         options: #{Search::MAP_OPTIONS}
+        events:
+          idle: (map, event, data) ->
+            $.get '#{new_search_path}?[search][bounds]=' + map.getBounds()
       },{
         action: 'addMarkers'
         radius: 100
@@ -38,8 +41,7 @@
       }
     )
   
-  %ul.listings
-    = render @listings
+  %ul#listings
     
 #right_column 
   #find_exhort
