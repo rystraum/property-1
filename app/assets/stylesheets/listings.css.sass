@@ -31,15 +31,7 @@ body.listings
   #find_exhort, #list_exhort
     margin-bottom: 30px
     font-weight: bold
-    font-size: 1.1em
-  
-  #right_column
-    width: 340px
-    float: right
-  
-  #listing_id
-    width: 100px      
-    
+    font-size: 1.1em    
     
   #left_column
     width: 600px
@@ -52,7 +44,7 @@ body.listings
         text-decoration: none
   
     #map_canvas
-      height: 400px
+      height: 550px
       width: 100%
       margin: 0 0 20px 0
       background: $very_light_gray
@@ -90,3 +82,38 @@ body.listings
           font-weight: bold
           color: $ocean_blue
           margin-bottom: 10px 
+  
+  #right_column
+    width: 340px
+    float: right
+    
+    #find_exhort
+      margin-bottom: 23px
+  
+    #listing_id
+      width: 100px
+    
+    #search 
+      postion: relative
+      top: -28px
+      border-top: solid 1px $very_light_gray
+      
+      h2
+        font-weight: bold
+        font-size: 1.1em
+      
+      .group_title
+        font-weight: bold
+        margin: 30px 0 15px 0
+        
+    #search_range
+      width: 30px
+    #search_address
+      margin-top: 15px
+      width: 230px
+      
+    #price
+      input[type='text']
+        width: 48px
+      #sale, #rent
+        margin-top: 25px

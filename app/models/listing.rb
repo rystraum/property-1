@@ -9,18 +9,17 @@ class Listing < ActiveRecord::Base
   
   RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
   RESIDENCE_CONSTRUCTIONS = {
-    'native'  => 'Native materials', 
-    'basic'   => 'Basic materials', 
-    'modern'  => 'Modern construction', 
-    'elegant' => 'Elegant'
+    :native  => 'Native materials', 
+    :basic   => 'Basic materials', 
+    :modern  => 'Modern construction', 
+    :elegant => 'Elegant'
   }
   RESIDENCE_TYPES = {
-    'house'        => "House",
-    'apartment'    => "Apartment, flat or condominium", 
-    'multi_unit'   => "Duplex or other multi-unit home",
-    'chalet'       => "Bungalow, chalet or cabin", 
-    'private_room' => "Private room or 'bachelor pad'",
-    'shared_room'  =>  "Shared room"
+    :house        => "House",
+    :apartment    => "Apartment or condominium", 
+    :chalet       => "Chalet or cabin", 
+    :private_room => "Private room",
+    :shared_room  => "Shared room"
   }
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]

@@ -3,7 +3,7 @@
   
   %p.caption
     - if listing.has_residence?
-      = Listing::RESIDENCE_TYPES[listing.residence_type]
+      = Listing::RESIDENCE_TYPES[listing.residence_type.to_sym]
       
   %ul
     %li= link_to "Show", listing
@@ -12,7 +12,7 @@
     - if listing.has_residence?
       %li
         %span.label Construction:
-        = Listing::RESIDENCE_CONSTRUCTIONS[listing.residence_construction].downcase
+        = Listing::RESIDENCE_CONSTRUCTIONS[listing.residence_construction.to_sym].downcase
       %li
         %span.label Size:
         = listing.residence_area

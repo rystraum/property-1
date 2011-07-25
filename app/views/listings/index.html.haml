@@ -1,23 +1,81 @@
+- content_for :head do
+  %script(type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false")
 - content_for :layout do
   - @sidebar = false
 
 #left_column
   #list_exhort
-    = link_to "List a property", [:new, :listing]
-    for free!
+    %strong
+      = link_to "List a property", [:new, :listing]
+      for free!
 
   #map_canvas
+  :javascript
+    $('#map_canvas').gmap3( 
+      {action: 'init',
+        options:{
+          center: [12, 121.5],
+          zoom: 6,
+        }
+      },
+      {action: 'addMarkers',
+        radius:100,
+        markers: #{marker_json @listings},
+        marker: {
+          options: {
+            icon: new google.maps.MarkerImage('http://maps.gstatic.com/mapfiles/icon_green.png')
+          },
+        },
+      });
   
   %ul.listings
-    = render partial: 'listing', collection: @listings #, spacer_template: 'listing_spacer'
+    = render @listings
     
 #right_column 
   #find_exhort
-    Find a property
-    = text_field_tag :listing_id, nil, placeholder: "Listing ID"
+    %strong Have a listing ID?
+    = text_field_tag :listing_id, nil, placeholder: "listing ID"
     %button(id='find_listing') Go
 
-  :coffeescript
+    :coffeescript
       $('#find_listing').click ->
-        // TODO: Add .strip()
+        # TODO: Add .strip()
         window.location.href = "#{listings_path}/" + $('#listing_id').val()
+  
+  #search
+    %h2 Show properties within
+    = simple_form_for @search do |f|
+      = f.text_field :range, placeholder: "Any"
+      km of
+      = f.text_field :address, placeholder: "place or address"
+
+      #price
+        #sale
+          = f.input :for_sale, label: false do
+            = f.input_field :for_sale
+            = f.label :for_sale
+            &nbsp; ₱
+            = f.text_field :for_sale_min_price, placeholder: "any"
+            to
+            = f.text_field :for_sale_max_price, placeholder: "any"
+        #rent
+          = f.input :for_rent, label: false do
+            = f.input_field :for_rent
+            = f.label :for_rent
+            &nbsp; ₱
+            = f.text_field :for_rent_min_price, placeholder: "any"
+            to
+            = f.text_field :for_rent_max_price, placeholder: "any"
+            per
+            = f.select :rental_term, ['day', 'week', 'month'], selected: 'month'
+  
+      #features
+        .group_title 
+          %strong Show these property types
+        -  Listing::RESIDENCE_TYPES.each do |type, label|
+          = f.input type, label: label
+        = f.input :land
+        = f.input :commercial
+        
+        
+  
