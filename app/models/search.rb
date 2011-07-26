@@ -19,14 +19,6 @@ class Search < ActiveRecord::Base
     land: true,
     commercial: true
   }
-  MAP_OPTIONS = { 
-    panControl: false,
-    center: [12,121.5],
-    zoom: 6,
-    minZoom: 6,
-    scaleControl: true,
-    streetViewControl: false
-  }.to_json
 
   after_validation :geocode, :if => :address_changed?
 

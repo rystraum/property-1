@@ -6,7 +6,7 @@
 #left_column
   #list_exhort
     %strong
-      = link_to "List a property", [:new, :listing]
+      = link_to "List your property", [:new, :listing]
       for free!
 
   #map_canvas
@@ -14,7 +14,7 @@
     $('#map_canvas').gmap3(
       {
         action: 'init'
-        options: #{Search::MAP_OPTIONS}
+        options: DEFAULT_MAP
         events:
           idle: (map, event, data) ->
             $.get '#{new_search_path}?[search][bounds]=' + map.getBounds()
@@ -57,7 +57,8 @@
     %h2 Show properties near
     = simple_form_for @search do |f|
       = f.text_field :address, placeholder: "place or address"
-      :coffeescript            
+      %button#go_search_address Go
+      :coffeescript
         $('#search_address').autocomplete
           source: (request, response) ->
             $('#map_canvas').gmap3
@@ -74,12 +75,8 @@
             $('#map_canvas').gmap3
               action: 'fitBounds'
               args: [ui.item.bounds]
-        $('#search_address').blur ->
-          if $(@).val($(@).val().trim()).val() == ''
-            $('#map_canvas').gmap3
-                action: 'fitBounds'
-                args: [PI_BOUNDS]
-            
+        $('#go_search_address').click -> false
+                
 
       #price
         #sale
@@ -108,6 +105,9 @@
           = f.input type, label: label
         = f.input :land
         = f.input :commercial
-        
+      
+      :coffeescript
+        $('#new_search input:not(#search_address)').blur ->
+          {}
         
   
