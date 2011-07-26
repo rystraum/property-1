@@ -23,7 +23,7 @@ class Search < ActiveRecord::Base
     panControl: false,
     center: [12,121.5],
     zoom: 6,
-    minZoom: 5,
+    minZoom: 6,
     scaleControl: true,
     streetViewControl: false
   }.to_json

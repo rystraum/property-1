@@ -45,8 +45,8 @@
     
 #right_column 
   #find_exhort
-    %strong Have a listing ID?
-    = text_field_tag :listing_id, nil, placeholder: "listing ID"
+    %strong Have a property ID?
+    = text_field_tag :listing_id, nil, placeholder: "ID"
     %button(id='find_listing') Go
 
     :coffeescript
@@ -54,15 +54,13 @@
         window.location.href = "#{listings_path}/" + $('#listing_id').val().trim()
   
   #search
-    %h2 Show properties within
+    %h2 Show properties near
     = simple_form_for @search do |f|
-      = f.text_field :range, placeholder: "any"
-      km of
       = f.text_field :address, placeholder: "place or address"
-      :coffeescript
+      :coffeescript            
         $('#search_address').autocomplete
           source: (request, response) ->
-            $("#map_canvas").gmap3
+            $('#map_canvas').gmap3
               action: 'getAddress'
               address: request.term + ', Philippines'
               callback: (results) ->
@@ -73,9 +71,15 @@
                   latLng: item.geometry.location
                   bounds: item.geometry.bounds
           select: (event, ui) ->
-            $("#map_canvas").gmap3
+            $('#map_canvas').gmap3
               action: 'fitBounds'
               args: [ui.item.bounds]
+        $('#search_address').blur ->
+          if $(@).val($(@).val().trim()).val() == ''
+            $('#map_canvas').gmap3
+                action: 'fitBounds'
+                args: [PI_BOUNDS]
+            
 
       #price
         #sale
