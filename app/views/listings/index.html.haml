@@ -56,8 +56,9 @@
   #search
     %h2 Show properties near
     = simple_form_for @search do |f|
+      #no_results
       = f.text_field :address, placeholder: "place or address"
-      %button#go_search_address Go
+      %button#go_search_address(type='button') Go
       :coffeescript
         $('#search_address').autocomplete
           source: (request, response) ->
@@ -72,10 +73,25 @@
                   latLng: item.geometry.location
                   bounds: item.geometry.bounds
           select: (event, ui) ->
+            $('#no_results').html ""
             $('#map_canvas').gmap3
               action: 'fitBounds'
               args: [ui.item.bounds]
-        $('#go_search_address').click -> false
+        $('#go_search_address').click ->
+          $('#map_canvas').gmap3
+            action: 'getAddress'
+            address: $('#search_address').val() + ', Philippines'
+            callback: (results) ->
+              if results
+                $('#no_results').html ""
+                $(@).gmap3
+                  action: 'fitBounds'
+                  args: [results[0].geometry.bounds]
+              else
+                $('#no_results').html "No place or address found."
+                $(@).gmap3
+                  action: 'fitBounds'
+                  args: [PI_BOUNDS]
                 
 
       #price
@@ -109,5 +125,6 @@
       :coffeescript
         $('#new_search input:not(#search_address)').blur ->
           {}
+
         
   
