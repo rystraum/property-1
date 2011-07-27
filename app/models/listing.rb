@@ -9,17 +9,17 @@ class Listing < ActiveRecord::Base
   
   RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
   RESIDENCE_CONSTRUCTIONS = {
-    :native  => 'Native materials', 
-    :basic   => 'Basic materials', 
-    :modern  => 'Modern construction', 
-    :elegant => 'Elegant'
+    'native'  => 'Native materials', 
+    'basic'   => 'Basic materials', 
+    'modern'  => 'Modern construction', 
+    'elegant' => 'Elegant'
   }
   RESIDENCE_TYPES = {
-    :house        => "House",
-    :apartment    => "Apartment or condominium", 
-    :chalet       => "Chalet or cabin", 
-    :private_room => "Private room",
-    :shared_room  => "Shared room"
+    'house'        => "House",
+    'apartment'    => "Apartment or condominium", 
+    'chalet'       => "Chalet or cabin", 
+    'private_room' => "Private room",
+    'shared_room'  => "Shared room"
   }
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]
@@ -30,8 +30,8 @@ class Listing < ActiveRecord::Base
   validates_presence_of :property, on: :update
 
   with_options allow_blank: :true do |v|
-    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys.map(&:to_s)
-    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES.keys.map(&:to_s)
+    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys
+    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES.keys
     v.validates_numericality_of :land_area, :residence_area, greater_than: 0
     v.validates_numericality_of *RENTAL_TERM_ATTRIBUTES, :selling_price, integer_only: true, greater_than: 0
   end

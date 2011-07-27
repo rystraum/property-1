@@ -1,11 +1,13 @@
 class Search < ActiveRecord::Base
   belongs_to :user
-
+  
+  nilify_blanks
   geocoded_by :address
 
   attr_writer :location, :bounds
+  [ :center, :sw_bounds, :ne_bounds ].each{ |a| serialize a, Array }
   
-  FLOAT_REGEX = /\d+\.?\d*/
+  FLOAT_REGEX = /-?\d+\.?\d*/
   RENTAL_TERMS = %w[ day week month ]
   DEFAULT_PARAMS = {
     for_sale: true,
@@ -20,6 +22,7 @@ class Search < ActiveRecord::Base
   }
 
   after_validation :geocode, :if => :address_changed?
+  validates :center, :sw_bounds, :ne_bounds, latlng: true
 
   def initialize(*args)
     super
@@ -27,7 +30,7 @@ class Search < ActiveRecord::Base
   end
 
   def bounds
-    [[sw_lat, sw_lng], [ne_lat, ne_lng]]
+    [sw_bounds, ne_bounds] if sw_bounds && ne_bounds
   end
 
   def listings
@@ -38,7 +41,8 @@ class Search < ActiveRecord::Base
   private
 
   def extract_bounds
-    self.sw_lat, self.sw_lng, self.ne_lat, self.ne_lng = @bounds.scan(FLOAT_REGEX).map(&:to_f)
+    points = @bounds.scan(FLOAT_REGEX).map(&:to_f)
+    self.sw_bounds, self.ne_bounds = points[0..1], points[2..3]
   end
 
 end
