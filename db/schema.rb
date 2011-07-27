@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110708074153) do
+ActiveRecord::Schema.define(:version => 20110723040032) do
 
   create_table "agencies", :force => true do |t|
     t.string   "name"
@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(:version => 20110708074153) do
     t.boolean  "elegant"
     t.boolean  "house"
     t.boolean  "apartment"
-    t.boolean  "multi_unit"
     t.boolean  "chalet"
     t.boolean  "private_room"
     t.boolean  "shared_room"
@@ -87,6 +86,9 @@ ActiveRecord::Schema.define(:version => 20110708074153) do
     t.integer  "for_sale_max_price"
     t.integer  "for_rent_min_price"
     t.integer  "for_rent_max_price"
+    t.integer  "center_lat"
+    t.integer  "center_lng"
+    t.integer  "zoom"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

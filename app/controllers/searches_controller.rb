@@ -7,5 +7,11 @@ class SearchesController < ApplicationController
     respond_with @search
   end
   
+  def create
+    @search = Search.new(params[:search])
+    render layout: false
+    respond_with @search
+  end
+  
   
 end

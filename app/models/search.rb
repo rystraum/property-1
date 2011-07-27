@@ -12,7 +12,6 @@ class Search < ActiveRecord::Base
     for_rent: true,
     house: true,
     apartment: true,
-    multi_unit: true,
     chalet: true,
     private_room: true,
     shared_room: true,

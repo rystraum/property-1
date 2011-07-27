@@ -28,6 +28,9 @@ class CreateSearches < ActiveRecord::Migration
       t.integer  :for_sale_max_price
       t.integer  :for_rent_min_price
       t.integer  :for_rent_max_price
+      t.integer  :center_lat
+      t.integer  :center_lng
+      t.integer  :zoom
       t.timestamps
     end
   end

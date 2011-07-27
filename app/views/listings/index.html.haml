@@ -55,11 +55,13 @@
   
   #search
     %h2 Show properties near
-    = simple_form_for @search do |f|
+    = simple_form_for @search, remote: true do |f|
       #no_results
       = f.text_field :address, placeholder: "place or address"
-      %button#go_search_address(type='button') Go
+      %button#go_search_address Go
+      -# %button#go_search_address(type='button') Go
       :coffeescript
+        $("#new_search").change -> this.submit()
         $('#search_address').autocomplete
           source: (request, response) ->
             $('#map_canvas').gmap3
@@ -93,7 +95,7 @@
                   action: 'fitBounds'
                   args: [PI_BOUNDS]
                 
-
+      
       #price
         #sale
           = f.input :for_sale, label: false do
@@ -113,7 +115,7 @@
             = f.text_field :for_rent_max_price, placeholder: "any"
             per
             = f.select :rental_term, ['day', 'week', 'month'], selected: 'month'
-  
+        
       #features
         .group_title 
           %strong Show these property types

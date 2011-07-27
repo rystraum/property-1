@@ -30,8 +30,8 @@ class Listing < ActiveRecord::Base
   validates_presence_of :property, on: :update
 
   with_options allow_blank: :true do |v|
-    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys
-    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES.keys
+    v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys.map(&:to_s)
+    v.validates_inclusion_of :residence_type, in: RESIDENCE_TYPES.keys.map(&:to_s)
     v.validates_numericality_of :land_area, :residence_area, greater_than: 0
     v.validates_numericality_of *RENTAL_TERM_ATTRIBUTES, :selling_price, integer_only: true, greater_than: 0
   end
