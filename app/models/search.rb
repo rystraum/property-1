@@ -29,8 +29,8 @@ class Search < ActiveRecord::Base
     streetViewControl: false
   }
   DEFAULT_SEARCH = {
+    bounds: [[6.2384055513847985, 115.35820312500005], [18.03054453518336, 128.54179687500005]],
     center: [12.2,121.95],
-    zoom: 6,
     for_sale: true,
     for_rent: true,
     house: true,

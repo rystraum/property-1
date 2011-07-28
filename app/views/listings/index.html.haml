@@ -45,13 +45,14 @@
     
 #right_column 
   #find_exhort
-    %strong Have a property ID?
-    = text_field_tag :listing_id, nil, placeholder: "ID"
-    %button(id='find_listing') Go
-
+    = form_tag '/listings', method: :get, id: 'find_listing' do
+      %strong Have a property ID?
+      = text_field_tag :listing_id, nil, placeholder: "ID"
+      = submit_tag "Go"
     :coffeescript
-      $('#find_listing').click ->
-        window.location.href = "#{listings_path}/" + $('#listing_id').val().trim()
+      $('#find_listing').submit ->
+        window.location.href = "/listings/" + $('#listing_id').val().trim()
+        false
   
   #search
     %h2 Show properties near
@@ -127,6 +128,7 @@
       :coffeescript
         $('#new_search input:not(#search_address)').blur ->
           {}
-
-        
+          
+  #reset
+    = link_to "reset search", listings_path(reset: true)
   
