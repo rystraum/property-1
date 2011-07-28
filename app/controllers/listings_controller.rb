@@ -4,10 +4,9 @@ class ListingsController < ApplicationController
   # This should be listing with unique property_ids.  Where duplicate IDs an algorithm for the best choice for 
   # inclusion should exist that considers completeness of listing, quantitiy of pictures, reviews, ratings, etc.
   def index
-    # @search = Search.new(session[:search] || Search::DEFAULT_PARAMS)
-    @search = Search.new Search::DEFAULT_PARAMS
+    session[:search] ||= Search::DEFAULT_SEARCH
+    @search = Search.new session[:search]
     @listings = @search.listings
-    @listings = Listing.all
   end
   
   def show

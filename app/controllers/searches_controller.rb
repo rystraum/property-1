@@ -1,16 +1,23 @@
 class SearchesController < ApplicationController
   respond_to :js
-
-  def new
-    params[:search] ||= Search::DEFAULT_PARAMS
-    @search = Search.new(params[:search])
-    respond_with @search
-  end
   
   def create
-    @search = Search.new(params[:search])
-    render layout: false
-    respond_with @search
+    format_postions
+    session[:search] = params[:search]
+    @search = Search.new session[:search]
+  end
+  
+  
+  protected
+  
+  def format_postions
+    if params[:search][:bounds].is_a? String
+      sw_bounds, ne_bounds = Search.format_positions(params[:search][:bounds])
+      params[:search][:bounds] = [sw_bounds, ne_bounds]
+    end
+    if params[:search][:center].is_a? String
+      params[:search][:center] = Search.format_positions(params[:search][:center]).first
+    end
   end
   
   

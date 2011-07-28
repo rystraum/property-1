@@ -14,10 +14,10 @@
     $('#map_canvas').gmap3(
       {
         action: 'init'
-        options: DEFAULT_MAP
+        options: #{@search.map_options}
         events:
           idle: (map, event, data) ->
-            $.get '#{new_search_path}?[search][bounds]=' + map.getBounds()
+            $.post '/searches?[search][bounds]=' + map.getBounds() + '&[search][center]=' + map.getCenter() + '&[search][zoom]=' + map.getZoom()
       },{
         action: 'addMarkers'
         radius: 100
@@ -61,7 +61,7 @@
       %button#go_search_address Go
       -# %button#go_search_address(type='button') Go
       :coffeescript
-        $("#new_search").change -> this.submit()
+        # $("#new_search").change -> this.submit()
         $('#search_address').autocomplete
           source: (request, response) ->
             $('#map_canvas').gmap3
@@ -72,7 +72,7 @@
                 response $.map results, (item) ->
                   label:  item.formatted_address
                   value: item.formatted_address
-                  latLng: item.geometry.location
+                  center: item.geometry.location
                   bounds: item.geometry.bounds
           select: (event, ui) ->
             $('#no_results').html ""
