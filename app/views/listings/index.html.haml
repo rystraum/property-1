@@ -69,7 +69,9 @@
               action: 'getAddress'
               address: request.term + ', Philippines'
               callback: (results) ->
-                return unless results
+                # TODO: Some general results like 'Visayas' don't have bounds. Gmaps still maps these
+                #       results and so should we, but how?
+                return unless results and results[0].geometry.bounds
                 response $.map results, (item) ->
                   label:  item.formatted_address
                   value: item.formatted_address
@@ -85,7 +87,7 @@
             action: 'getAddress'
             address: $('#search_address').val() + ', Philippines'
             callback: (results) ->
-              if results
+              if results and results[0].geometry.bounds
                 $('#no_results').html ""
                 $(@).gmap3
                   action: 'fitBounds'
