@@ -12,7 +12,7 @@ gem 'coffee-filter'
 gem "carrierwave", "~> 0.5"
 gem "mini_magick"
 
-gem "devise", "~> 1.4"
+gem "devise", "~> 1.4.2"
 gem "inherited_resources"
 gem "simple_form", "~> 1.4"
 gem "show_for"
@@ -35,9 +35,7 @@ group :test do
   gem "rspec-rails"
   gem "cucumber-rails"
   gem "capybara"
-  
-  # TODO: Master support Capybara 1.0.  Remove git on next update.
-  gem "capybara-webkit", git: "git://github.com/thoughtbot/capybara-webkit"
+  gem "capybara-webkit"
 end
 
 gem "therubyracer", :group => :production, :require => "v8"

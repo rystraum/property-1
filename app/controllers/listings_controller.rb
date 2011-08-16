@@ -1,5 +1,6 @@
 class ListingsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :disable_caching, :only => [:index]
 
   # This should be listing with unique property_ids.  Where duplicate IDs an algorithm for the best choice for 
   # inclusion should exist that considers completeness of listing, quantitiy of pictures, reviews, ratings, etc.
@@ -40,4 +41,5 @@ class ListingsController < ApplicationController
       render :edit
     end
   end
+
 end
