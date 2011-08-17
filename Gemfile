@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0.rc5'
+gem 'rails', '3.1.0.rc6'
 gem 'mysql'
 
 gem 'sass-rails', "~> 3.1.0.rc"
@@ -27,14 +27,11 @@ gem "rails3-generators", :group => :development
 
 
 group :test do
-
-  # TODO: Remove git on next update.
-  gem "fabrication", git: "git://github.com/paulelliott/fabrication"
+  gem "fabrication"
   gem "faker"
   gem "database_cleaner"
   gem "rspec-rails"
   gem "cucumber-rails"
-  gem "capybara"
   gem "capybara-webkit"
 end
 
