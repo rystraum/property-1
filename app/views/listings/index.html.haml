@@ -17,11 +17,13 @@
         options: #{@search.map_options}
         events:
           idle: (map, event, data) ->
-            $.post '/searches?[search][bounds]=' + map.getBounds() + '&[search][center]=' + map.getCenter() + '&[search][zoom]=' + map.getZoom()
+            $.post '/searches?[search][bounds]=' + map.getBounds() + 
+                            '&[search][center]=' + map.getCenter() + 
+                            '&[search][zoom]='   + map.getZoom()
       },{
         action: 'addMarkers'
         radius: 100
-        markers: #{marker_json @listings}
+        markers: #{marker_json Listing.all}
         clusters:
           0:
             content: '<div class="cluster cluster-0"></div>'
@@ -70,7 +72,8 @@
               address: request.term + ', Philippines'
               callback: (results) ->
                 # TODO: Some general results like 'Visayas' don't have bounds. Gmaps still maps these
-                #       results and so should we, but how?
+                #       results and so should we, but how?  Until this is solved, we don't handle results
+                #       with no bounds.
                 return unless results and results[0].geometry.bounds
                 response $.map results, (item) ->
                   label:  item.formatted_address
