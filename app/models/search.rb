@@ -3,7 +3,7 @@ class Search < ActiveRecord::Base
   
   nilify_blanks
   geocoded_by :address
-
+  
   attr_writer :location, :bounds
   [ :center, :sw_bounds, :ne_bounds ].each{ |a| serialize a, Array }
   
@@ -63,8 +63,7 @@ class Search < ActiveRecord::Base
   def listings
     scope = Listing.scoped
     scope = residence_type_scope(scope)
-    scope = for_sale_scope(scope)
-    scope = for_rent_scope(scope)
+    scope = sale_or_rent_scope(scope)
     # TODO: Add "More value as land" before implementing search functionality
     # scope = scope.where('land_area > 0') if land
     scope = scope.within_bounding_box(bounds) # if bounds
@@ -85,21 +84,11 @@ class Search < ActiveRecord::Base
     scope
   end
   
-  def for_sale_scope(scope)
-    return scope.where(Listing.for_rent_sql) if for_rent && !for_sale
-    return scope.where(selling_price: nil) unless for_sale  # Filter those not for sale
-    scope = scope.where("selling_price >= ?", for_sale_min_price) if for_sale_min_price
-    scope = scope.where("selling_price <= ?", for_sale_max_price) if for_sale_max_price
-    scope
-  end
-  
-  def for_rent_scope(scope)
-    return scope.where("selling_price IS NOT NULL") if !for_rent && for_sale
-    return scope.where(Listing.not_for_rent_sql) unless for_rent
-    # TODO: Fully handle rental term
-    scope = scope.where("#{rental_term} >= ?", for_rent_min_price) if for_rent_min_price
-    scope = scope.where("#{rental_term} <= ?", for_rent_max_price) if for_rent_max_price
-    scope
+  def sale_or_rent_scope(scope)
+    return scope.where(id: nil) unless for_sale or for_rent
+    return scope                if for_sale and for_rent
+    return scope.for_rent       if for_rent
+    return scope.for_sale       if for_sale
   end
   
 end

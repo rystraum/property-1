@@ -29,20 +29,7 @@ describe Search do
     it "should include those 'for sale' when only 'for rent' is specified if listings are both 'for rent' and 'for sale'" do
       listing = Fabricate :listing, selling_price: 10000, rent_per_day: 1000
       search = Fabricate.build :search, for_rent: true
-      search.send(:for_rent_scope, Listing.scoped).should == [listing]
-    end
-    
-    it "should filter rental price range if a range is given and 'for rent' selected" do
-      listing1 = Fabricate :listing, rent_per_day: 1000
-      listing2 = Fabricate :listing, rent_per_day: 2000
-      search = Fabricate.build :search, for_rent: true, rental_term: 'rent_per_day', for_rent_min_price: 800, for_rent_max_price: 1500
-      search.send(:for_rent_scope, Listing.scoped).should == [listing1]
-    end
-    
-    it "should not filter rental price range if 'for rent' not selected" do
-      listing = Fabricate :listing, selling_price: 10000, rent_per_day: 1000
-      search = Fabricate.build :search, for_sale: true, for_rent: false, rental_term: 'rent_per_day', for_rent_min_price: 1100, for_rent_max_price: 1500
-      search.send(:for_rent_scope, Listing.scoped).should == [listing]
+      search.send(:sale_or_rent_scope, Listing.scoped).should == [listing]
     end
   end
   

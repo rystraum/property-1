@@ -26,25 +26,13 @@
       #no_results
       = f.text_field :address, placeholder: "Near place or address"
       %button#go_search_address Go
-      #price
-        #sale
-          = f.input :for_sale, label: false do
-            = f.input_field :for_sale
-            = f.label :for_sale
-            &nbsp; ₱
-            = f.text_field :for_sale_min_price, placeholder: "any"
-            to
-            = f.text_field :for_sale_max_price, placeholder: "any"
-        #rent
-          = f.input :for_rent, label: false do
-            = f.input_field :for_rent
-            = f.label :for_rent
-            &nbsp; ₱
-            = f.text_field :for_rent_min_price, placeholder: "any"
-            to
-            = f.text_field :for_rent_max_price, placeholder: "any"
-            per
-            = f.select :rental_term, [['day', 'rent_per_day'], ['week', 'rent_per_week'], ['month', 'rent_per_month']], selected: 'month'
+      #sale_or_rent
+        = f.input :for_sale, label: false do
+          = f.input_field :for_sale
+          = f.label :for_sale
+        = f.input :for_rent, label: false do
+          = f.input_field :for_rent
+          = f.label :for_rent
       #features
         .group_title 
           %strong Of these types

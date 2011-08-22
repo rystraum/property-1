@@ -1,4 +1,5 @@
 class Listing < ActiveRecord::Base
+  
   include FormHelpers
 
   nilify_blanks
@@ -8,6 +9,9 @@ class Listing < ActiveRecord::Base
   belongs_to :property
   
   RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
+  FOR_RENT_SQL = Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NOT NULL)"}.join(' OR ')
+  NOT_FOR_RENT_SQL = Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NULL)"}.join(' OR ')
+  
   RESIDENCE_CONSTRUCTIONS = {
     'native'  => 'Native materials', 
     'basic'   => 'Basic materials', 
@@ -45,15 +49,9 @@ class Listing < ActiveRecord::Base
   after_create :create_property_if_none_found
   after_destroy :destroy_property_if_last_listing
   
-  !
-  def self.for_rent_sql
-    @@for_rent_sql ||= Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NOT NULL)"}.join(' OR ')
-  end
-  
-  !
-  def self.not_for_rent_sql
-    @@not_for_rent_sql ||= Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NULL)"}.join(' OR ')
-  end
+  scope :for_sale, where('selling_price IS NOT NULL')
+  scope :for_rent, where(FOR_RENT_SQL)
+  scope :not_for_rent, where(NOT_FOR_RENT_SQL)
   
   # For form handling.
   #
