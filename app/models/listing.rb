@@ -16,7 +16,7 @@ class Listing < ActiveRecord::Base
   }
   RESIDENCE_TYPES = {
     'house'        => "House",
-    'apartment'    => "Apartment or condominium", 
+    'apartment'    => "Apartment or condo", 
     'chalet'       => "Chalet or cabin", 
     'private_room' => "Private room",
     'shared_room'  => "Shared room"
@@ -44,6 +44,16 @@ class Listing < ActiveRecord::Base
   
   after_create :create_property_if_none_found
   after_destroy :destroy_property_if_last_listing
+  
+  !
+  def self.for_rent_sql
+    @@for_rent_sql ||= Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NOT NULL)"}.join(' OR ')
+  end
+  
+  !
+  def self.not_for_rent_sql
+    @@not_for_rent_sql ||= Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NULL)"}.join(' OR ')
+  end
   
   # For form handling.
   #

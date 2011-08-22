@@ -17,8 +17,7 @@ class Search < ActiveRecord::Base
     chalet: true,
     private_room: true,
     shared_room: true,
-    land: true,
-    commercial: true
+    land: true
   }
   DEFAULT_MAP = { 
     panControl: false,
@@ -38,8 +37,7 @@ class Search < ActiveRecord::Base
     chalet: true,
     private_room: true,
     shared_room: true,
-    land: true,
-    commercial: true
+    land: true
   }
 
   after_validation :geocode, :if => :address_changed?
@@ -61,14 +59,47 @@ class Search < ActiveRecord::Base
   def bounds
     [sw_bounds, ne_bounds] if sw_bounds && ne_bounds
   end
-
+  
   def listings
-    Listing.within_bounding_box(bounds)
+    scope = Listing.scoped
+    scope = residence_type_scope(scope)
+    scope = for_sale_scope(scope)
+    scope = for_rent_scope(scope)
+    # TODO: Add "More value as land" before implementing search functionality
+    # scope = scope.where('land_area > 0') if land
+    scope = scope.within_bounding_box(bounds) # if bounds
+    scope
   end
   
   def map_options
     params = attributes.select{ |k,v| %w[ center zoom ].include?(k) && v }
     DEFAULT_MAP.merge(params).to_json
+  end
+  
+  
+  protected
+  
+  def residence_type_scope(scope)
+    blacklist = Listing::RESIDENCE_TYPES.keys.delete_if{ |e| send(e) }
+    scope = scope.where "residence_type IS NULL OR residence_type NOT IN (#{ blacklist.map{ |e| "'#{e}'" }.join(', ') })" unless blacklist.empty?
+    scope
+  end
+  
+  def for_sale_scope(scope)
+    return scope.where(Listing.for_rent_sql) if for_rent && !for_sale
+    return scope.where(selling_price: nil) unless for_sale  # Filter those not for sale
+    scope = scope.where("selling_price >= ?", for_sale_min_price) if for_sale_min_price
+    scope = scope.where("selling_price <= ?", for_sale_max_price) if for_sale_max_price
+    scope
+  end
+  
+  def for_rent_scope(scope)
+    return scope.where("selling_price IS NOT NULL") if !for_rent && for_sale
+    return scope.where(Listing.not_for_rent_sql) unless for_rent
+    # TODO: Fully handle rental term
+    scope = scope.where("#{rental_term} >= ?", for_rent_min_price) if for_rent_min_price
+    scope = scope.where("#{rental_term} <= ?", for_rent_max_price) if for_rent_max_price
+    scope
   end
   
 end
