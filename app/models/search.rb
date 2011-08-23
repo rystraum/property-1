@@ -64,9 +64,8 @@ class Search < ActiveRecord::Base
     scope = Listing.scoped
     scope = residence_type_scope(scope)
     scope = sale_or_rent_scope(scope)
-    # TODO: Add "More value as land" before implementing search functionality
-    # scope = scope.where('land_area > 0') if land
-    scope = scope.within_bounding_box(bounds) # if bounds
+    scope = land_scope(scope)
+    scope = scope.within_bounding_box(bounds)
     scope
   end
   
@@ -89,6 +88,11 @@ class Search < ActiveRecord::Base
     return scope                if for_sale and for_rent
     return scope.for_rent       if for_rent
     return scope.for_sale       if for_sale
+  end
+  
+  def land_scope(scope)
+    scope = scope.exclude_land unless land
+    scope
   end
   
 end

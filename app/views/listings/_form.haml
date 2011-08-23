@@ -14,12 +14,16 @@
     = f.input :longitude, as: :string
   
   %h3 Details
-  .input
+  #listing_contains.input
     %abbr(title='required') *
     This listing contains
-    %p 
-      #{f.check_box :includes_residence_values} a residence &nbsp; &nbsp;
-      #{f.check_box :includes_land_values} land
+    %p
+      #residence_values
+        #{f.check_box :includes_residence_values} A residence
+      #land_values
+        #{f.check_box :includes_land_values} Land
+        #list_as_land
+          #{f.check_box :list_as_land} The land is worth more than the residence
   
   #residence_fields
     %fieldset
@@ -83,3 +87,14 @@
   %h3 What is your interest in this property?
   = f.input :lister_interest, label: false, hint: "Are you the owner, an agent, a friend, etc?"
   = f.button :submit
+  
+  
+:coffeescript
+  listAsLandCheck = ->
+    if $('#listing_includes_residence_values').is(':checked') and $('#listing_includes_land_values').is(':checked')
+      $('#list_as_land').enable()
+    else
+      $('#list_as_land').disable()
+  listAsLandCheck()
+  $('#listing_includes_residence_values, #listing_includes_land_values').click ->
+    listAsLandCheck()

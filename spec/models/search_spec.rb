@@ -31,6 +31,21 @@ describe Search do
       search = Fabricate.build :search, for_rent: true
       search.send(:sale_or_rent_scope, Listing.scoped).should == [listing]
     end
+    
+    # it "should include as land listings those residences that are specified to 'list as land'" do
+    #   listing1 = Fabricate :listing, list_as_land: true, land_area: 1000
+    #   listing2 = Fabricate :residence_listing, land_area: 1000
+    #   search = Fabricate.build :search, land: true
+    #   search.send(:land_scope, Listing.scoped).should == [listing1]
+    # end
+    
+    it "should exclude land listings if land is not specified" do
+      listing1 = Fabricate :land_listing
+      listing2 = Fabricate :residence_listing, land_area: 1000
+      search = Fabricate.build :search, land: false
+      search.send(:land_scope, Listing.scoped).should == [listing2]
+    end
+    
   end
   
   

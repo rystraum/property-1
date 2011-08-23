@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20110723040032) do
     t.float    "longitude"
     t.string   "address"
     t.integer  "land_area"
+    t.boolean  "list_as_land",                     :default => false
     t.integer  "residence_area"
     t.string   "residence_construction"
     t.boolean  "beach_front"

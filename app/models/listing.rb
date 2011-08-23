@@ -52,6 +52,7 @@ class Listing < ActiveRecord::Base
   scope :for_sale, where('selling_price IS NOT NULL')
   scope :for_rent, where(FOR_RENT_SQL)
   scope :not_for_rent, where(NOT_FOR_RENT_SQL)
+  scope :exclude_land, where('residence_type IS NOT NULL')
   
   # For form handling.
   #
