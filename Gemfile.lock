@@ -38,6 +38,8 @@ GEM
     archive-tar-minitar (0.5.2)
     arel (2.2.1)
     bcrypt-ruby (2.1.4)
+    bourbon (0.1.5)
+      sass (>= 3.1)
     builder (3.0.0)
     cancan (1.6.5)
     capybara (1.0.1)
@@ -206,6 +208,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bourbon
   cancan
   capybara-webkit
   carrierwave (~> 0.5)

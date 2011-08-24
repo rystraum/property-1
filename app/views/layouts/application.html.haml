@@ -1,15 +1,17 @@
 !!!
 %html
   %head
+    %meta{"http-equiv"=>"Content-Type", content: "text/html; charset=utf-8"}
     %title= yield(:title) || "Untitled"
-    %meta{"http-equiv"=>"Content-Type", content: "text/html; charset=utf-8"}/
+    /[if lt IE 9]
+      %script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
     = yield :head
     = stylesheet_link_tag "application"
     = javascript_include_tag "application" 
     = csrf_meta_tag
     
 
-  %body( class="#{ params[:controller].parameterize }" )
+  %body(lang="en" class="#{ params[:controller].parameterize }")
     #outer_wrapper
       #outer_wrapper_top
       #inner_wrapper
