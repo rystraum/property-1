@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '3.1.0.rc6'
 gem 'mysql'
 
+gem 'sass', require: 'sass'
 gem 'sass-rails', '~> 3.1.0.rc'
 gem 'coffee-script'
 gem 'uglifier'
@@ -26,6 +27,7 @@ gem 'haml-rails'
 gem 'rails3-generators', :group => :development
 
 
+gem 'growl', group: [:test, :development]
 gem 'rspec-rails', group: [:test, :development]
 group :test do
   gem 'fabrication'

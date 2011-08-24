@@ -8,6 +8,8 @@ require 'capybara/rspec'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+Capybara.javascript_driver = :webkit
+
 RSpec.configure do |config|
   # == Mock Framework
   #
@@ -23,5 +25,4 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
   
-  Capybara.javascript_driver = :webkit
 end

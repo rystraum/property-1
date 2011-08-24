@@ -73,6 +73,7 @@ GEM
     faker (0.9.5)
       i18n (~> 0.4)
     ffi (1.0.9)
+    growl (1.0.3)
     guard (0.6.2)
       thor (~> 0.14.6)
     guard-rspec (0.4.2)
@@ -214,6 +215,7 @@ DEPENDENCIES
   fabrication
   faker
   geocoder!
+  growl
   guard-rspec
   haml-rails
   inherited_resources
@@ -226,6 +228,7 @@ DEPENDENCIES
   rails3-generators
   rspec-rails
   ruby-debug19
+  sass
   sass-rails (~> 3.1.0.rc)
   show_for
   simple_form (~> 1.4)

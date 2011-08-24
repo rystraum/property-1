@@ -16,7 +16,7 @@
     = form_tag '/listings', method: :get, id: 'find_listing' do
       %strong Have a property ID?
       = text_field_tag :listing_id, nil, placeholder: "ID"
-      = submit_tag "Go"
+      = submit_tag "Go", id: 'find_listing_button'
   #search
     %h2 Show properties
     = simple_form_for @search, remote: true do |f|
