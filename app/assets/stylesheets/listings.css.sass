@@ -23,20 +23,9 @@ ul.tags
     display: inline-block
     padding: 3px
     font-size: 0.9em
-
-// NEW & EDIT
-
-#listing_contains
-  height: 100px
-#land_values, #residence_values
-  float: left
-#land_values
-  display: inline
-#land_values
-  padding-left: 70px
   
 
-body.listings
+body.listings-index
 
   // INDEX
 
@@ -136,4 +125,23 @@ body.listings
     
     #reset
       margin-top: 60px
-      
+
+
+
+body.listings_new, body.listings_edit
+
+  #map_canvas
+    height: 550px
+    width: 100%
+    margin: 0 0 20px 0
+    background: $very_light_gray
+
+
+  #listing_contains
+    height: 100px
+  #land_values, #residence_values
+    float: left
+  #land_values
+    display: inline
+  #land_values
+    padding-left: 70px  

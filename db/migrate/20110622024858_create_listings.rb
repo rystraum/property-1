@@ -4,7 +4,6 @@ class CreateListings < ActiveRecord::Migration
       t.belongs_to :user
       t.belongs_to :property
 
-      t.string :title
       t.float :latitude
       t.float :longitude
       t.string :address

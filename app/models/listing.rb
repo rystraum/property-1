@@ -30,7 +30,7 @@ class Listing < ActiveRecord::Base
 
   attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values
 
-  validates_presence_of :user, :latitude, :longitude, :title
+  validates_presence_of :user, :latitude, :longitude
   validates_presence_of :property, on: :update
 
   with_options allow_blank: :true do |v|

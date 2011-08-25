@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(:version => 20110723040032) do
   create_table "listings", :force => true do |t|
     t.integer  "user_id"
     t.integer  "property_id"
-    t.string   "title"
     t.float    "latitude"
     t.float    "longitude"
     t.string   "address"
