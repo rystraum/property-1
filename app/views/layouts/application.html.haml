@@ -9,15 +9,15 @@
     = stylesheet_link_tag "application"
     = javascript_include_tag "application" 
     = csrf_meta_tag
-    
-  %body(lang="en" class="#{ request.path.parameterize }")
+  
+  %body(lang="en" class="#{ body_class }")
     #outer_wrapper
       #outer_wrapper_top
       #inner_wrapper
         %header
           #logo
             = link_to "<span class='c'>Clear</span><span class='p'>Property</span>".html_safe, root_path
-            %h1 For sale and for rent in the Philippines
+            %h1 Property for sale and for rent in the Philippines
           
           = render 'login'
           
