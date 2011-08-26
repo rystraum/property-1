@@ -1,4 +1,5 @@
 $ = jQuery
+root = global ? window
 
 # Disable inputs and add .disabled class to non-inputs.
 $.fn.disable = ->
@@ -42,3 +43,20 @@ $.fn.toggleCheckedElements = (inputs) ->
     else
       inputs.slideUp 'fast'
       inputs.clearInputs()
+
+
+
+
+####### GEOCODING #######
+
+root.humanizeLat = (lat) ->
+  if lat < 0
+    "S " + lat
+  else
+    "N " + lat
+    
+root.humanizeLng = (lng) ->
+  if lng < 0
+    "W " + lng
+  else
+    "E " + lng

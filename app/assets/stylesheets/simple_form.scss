@@ -38,6 +38,11 @@ $INSTRUCTION_COLOR: #796D6F;
   label {
     float: left;
     width: 200px;
+    font-weight: bold;
+  }
+  
+  label.boolean {
+    font-weight: normal;
   }
    
   textarea, input.string {

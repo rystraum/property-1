@@ -103,7 +103,7 @@
       action: 'getAddress'
       address: $('#search_address').val() + ', Philippines'
       callback: (results) ->
-        bounds = results?.first.geometry.bounds
+        bounds = results[0].geometry.bounds if results
         if bounds
           $('#no_results').html ""
           $(@).gmap3

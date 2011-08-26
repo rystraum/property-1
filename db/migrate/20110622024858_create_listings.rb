@@ -15,6 +15,7 @@ class CreateListings < ActiveRecord::Migration
       t.boolean :near_beach
       t.string :residence_type
       t.text :description
+      t.string :address
 
       t.integer :selling_price
       

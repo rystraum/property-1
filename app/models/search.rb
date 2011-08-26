@@ -20,7 +20,7 @@ class Search < ActiveRecord::Base
     land: true
   }
   DEFAULT_MAP = { 
-    panControl: false,
+    panControl: true,
     center: [12.2,121.95],
     zoom: 6,
     minZoom: 6,

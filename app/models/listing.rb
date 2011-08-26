@@ -28,8 +28,6 @@ class Listing < ActiveRecord::Base
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]
 
-  attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values
-
   validates_presence_of :user, :latitude, :longitude
   validates_presence_of :property, on: :update
 
@@ -56,6 +54,7 @@ class Listing < ActiveRecord::Base
   
   # For form handling.
   #
+  attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values, :save_address
   
   def includes_alt_contact_values
     check_box_checked?(@includes_alt_contact_values) || has_alt_contact?
@@ -67,6 +66,10 @@ class Listing < ActiveRecord::Base
   
   def includes_land_values
     check_box_checked?(@includes_land_values) || REQUIRED_LAND_ATTRIBUTES.any? { |a| send a }
+  end
+  
+  def save_address
+    address.present?
   end
   
   ###

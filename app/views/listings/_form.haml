@@ -1,27 +1,33 @@
 - content_for :head do
   = gmaps_script_tag
 
+%p Locate your property on the map by zooming in as close as possible. To zoom, double-click the map or use the zoom control. 
+%p The marker represent your property location. It will move when you click the map.
+
+#map
+  #map_canvas
+  
 = simple_form_for @listing do |f|
 
   = f.error_messages
   
   #location
-    #map
-      #map_canvas
-      :coffeescript
-        $('#map_canvas').gmap3(
-          {
-            action: 'init'
-            options: #{@map_options}
-          }
-        )
+    %h3 Location
+    
     #address
-      %h3 Address
-      #coordinates.clearfix
-        %br
-        = f.input :latitude, as: :string
-        = f.input :longitude, as: :string
-
+      = f.input :address, label: false do
+        #no_results
+        = f.input_field :address, as: :text, placeholder: "Search for a place or address"
+        %button#search_zoom Search
+      = f.input :save_address, as: :boolean, hint: "Do you want to save this as the property's address? <br/>You must still ensure that the marker is set accurately, as the property is always listed according to the marker.".html_safe, label: "Save this is as the property's address"
+    #position
+      %h3 Marker Position
+      = f.input :latitude, as: :string
+      = f.input :longitude do
+        = f.input_field :longitude, as: :string
+        %button#position_zoom Zoom
+    
+  .clearfix
   %h3 Details
   #listing_contains.input
     %abbr(title='required') *
@@ -32,7 +38,7 @@
       #land_values
         #{f.check_box :includes_land_values} Land
         #list_as_land
-          #{f.check_box :list_as_land} The land is worth more than the residence
+          #{f.check_box :list_as_land} The land is probably worth more than the residence
 
   #residence_fields
     %fieldset
@@ -40,22 +46,22 @@
       - f.with_options required: true do |w|
         = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
         = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
-        = w.input :residence_area, label: 'Area' do
-          #{w.input_field :residence_area, as: :string} #{m2}
-      
+        -# = w.input :residence_area, label: 'Area' do
+        -#   #{w.input_field :residence_area, as: :string} #{m2}
+    
   #land_fields
     %fieldset
       %legend Land
       = f.input :land_area, label: 'Area', required: true do
         #{f.input_field :land_area, as: :string} #{m2}
- 
+
   %h3 Description
   = f.input :description, label: false
 
   %h4 Special Features
   = f.input :beach_front
   = f.input :near_beach
-       
+     
   %h3 For Sale
   .instruction 
     %p Add a selling price if the property is for sale.  
@@ -99,6 +105,74 @@
 
 
 :coffeescript
+
+      
+  marker = null
+  
+  $('#map_canvas').gmap3(
+    {
+      action: 'init'
+      options:
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+        panControl: true
+        center: [12.2,121.95]
+        zoom: 6
+        minZoom: 6
+        scaleControl: true
+        streetViewControl: false
+      events:
+        idle: (map, event, data) ->
+          $('#listing_latitude').val humanizeLat(marker.getPosition().lat().toFixed(4))
+          $('#listing_longitude').val humanizeLng(marker.getPosition().lng().toFixed(4))
+        click: (map, event, data) ->
+          mapZoom = map.getZoom()
+          setTimeout (->
+            if mapZoom == map.getZoom()
+              marker.setPosition event.latLng
+              map.panTo event.latLng 
+          ), 180
+    },{
+      action: 'addMarker'
+      latLng: [12.2,121.95]
+      callBack: (newMarker) ->
+        marker = newMarker
+    }
+  )
+  
+  $('#listing_address').autocomplete
+    source: (request, response) ->
+      $('#map_canvas').gmap3
+        action: 'getAddress'
+        address: request.term + ', Philippines'
+        callback: (results) ->
+          return unless results and results[0].geometry.bounds
+          response $.map results, (item) ->
+            label:  item.formatted_address
+            value: item.formatted_address
+            bounds: item.geometry.bounds
+    select: (event, ui) ->
+      $('#no_results').html ""
+      $('#map_canvas').gmap3
+        action: 'fitBounds'
+        args: [ui.item.bounds]
+        
+  $('#search_zoom').click ->
+    $('#map_canvas').gmap3
+      action: 'getAddress'
+      address: $('#listing_address').val().replace(/\n/, ";") + '; Philippines'
+      callback: (results) ->
+        bounds = results[0].geometry.bounds if results
+        if bounds
+          $('#no_results').html ""
+          $(@).gmap3
+            action: 'fitBounds'
+            args: [bounds]
+          map = $(@).gmap3('get')
+          marker.setPosition map.getCenter()
+        else
+          $('#no_results').html "No place or address found."
+    return false
+
   listAsLandCheck = ->
     if $('#listing_includes_residence_values').is(':checked') and $('#listing_includes_land_values').is(':checked')
       $('#list_as_land').enable()
