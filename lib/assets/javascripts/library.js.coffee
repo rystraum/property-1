@@ -45,18 +45,34 @@ $.fn.toggleCheckedElements = (inputs) ->
       inputs.clearInputs()
 
 
-
-
 ####### GEOCODING #######
 
+
+# Example: Converts: "N 23.22", "W 118.23" 
+#                To: "23.22, -118.23"
+#
+root.convertLatLng = (lat, lng) ->
+  return false unless lat.match(/^\s*[NS]\s*\d+\.?\d*\s*$/i) and lng.match(/^\s*[EW]\s*\d+\.?\d*\s*$/i)
+  latValue = lat.match(/\d+\.?\d*/)[0]
+  lngValue = lng.match(/\d+\.?\d*/)[0]
+  return false unless (0 < latValue < 90) and (0 < lngValue < 180)
+  latValue = -(latValue) if lat.match /s/i
+  lngValue = -(lngValue) if lng.match /w/i
+  
+  [latValue, lngValue]
+  
+  
 root.humanizeLat = (lat) ->
   if lat < 0
+    lat = Math.abs lat
     "S " + lat
   else
     "N " + lat
+  
     
 root.humanizeLng = (lng) ->
   if lng < 0
+    lng = Math.abs lng
     "W " + lng
   else
     "E " + lng

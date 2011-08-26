@@ -1,5 +1,4 @@
 class ListingsController < ApplicationController
-  MAP_OPTIONS = Search::DEFAULT_MAP
   
   before_filter :authenticate_user!, :except => [:index, :show]
   before_filter :disable_caching, :only => [:index]
@@ -18,7 +17,6 @@ class ListingsController < ApplicationController
   
   def new
     @listing = @u.listings.build
-    @map_options = Search::DEFAULT_MAP.to_json
   end
   
   def create

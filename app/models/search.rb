@@ -8,6 +8,7 @@ class Search < ActiveRecord::Base
   [ :center, :sw_bounds, :ne_bounds ].each{ |a| serialize a, Array }
   
   FLOAT_REGEX = /-?\d+\.?\d*/
+  
   RENTAL_TERMS = %w[ day week month ]
   DEFAULT_PARAMS = {
     for_sale: true,

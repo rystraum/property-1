@@ -1,31 +1,29 @@
 - content_for :head do
   = gmaps_script_tag
 
-%p Locate your property on the map by zooming in as close as possible. To zoom, double-click the map or use the zoom control. 
-%p The marker represent your property location. It will move when you click the map.
-
-#map
-  #map_canvas
-  
 = simple_form_for @listing do |f|
 
   = f.error_messages
   
+  %p Locate your property on the map by zooming in as close as possible. To zoom, double-click the map or use the zoom control.
+  %p The marker represents your property location. Move it by clicking the map.
+
+  #map
+    #map_canvas
   #location
-    %h3 Location
-    
     #address
       = f.input :address, label: false do
-        #no_results
         = f.input_field :address, as: :text, placeholder: "Search for a place or address"
         %button#search_zoom Search
-      = f.input :save_address, as: :boolean, hint: "Do you want to save this as the property's address? <br/>You must still ensure that the marker is set accurately, as the property is always listed according to the marker.".html_safe, label: "Save this is as the property's address"
+        #address_no_results_container
+      = f.input :save_address, as: :boolean, hint: "You can save this as this properties address, but you  must ensure that the marker is set accurately. Properties are always listed according to their marker, not address.", label: "Save as the property's address"
     #position
       %h3 Marker Position
-      = f.input :latitude, as: :string
+      = f.input :latitude, as: :string, input_html: { autocomplete: 'off' }
       = f.input :longitude do
-        = f.input_field :longitude, as: :string
+        = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
         %button#position_zoom Zoom
+        #position_error_container
     
   .clearfix
   %h3 Details
@@ -46,8 +44,8 @@
       - f.with_options required: true do |w|
         = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
         = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
-        -# = w.input :residence_area, label: 'Area' do
-        -#   #{w.input_field :residence_area, as: :string} #{m2}
+      = f.input :residence_area, label: 'Area', required: true do
+        #{f.input_field :residence_area, as: :string} #{m2}
     
   #land_fields
     %fieldset
@@ -106,14 +104,15 @@
 
 :coffeescript
 
-      
   marker = null
+  map = null
+  maxZoomService = new google.maps.MaxZoomService()
   
   $('#map_canvas').gmap3(
     {
       action: 'init'
       options:
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+        mapTypeId: google.maps.MapTypeId.HYBRID
         panControl: true
         center: [12.2,121.95]
         zoom: 6
@@ -122,8 +121,8 @@
         streetViewControl: false
       events:
         idle: (map, event, data) ->
-          $('#listing_latitude').val humanizeLat(marker.getPosition().lat().toFixed(4))
-          $('#listing_longitude').val humanizeLng(marker.getPosition().lng().toFixed(4))
+          $('#listing_latitude').val humanizeLat(marker.getPosition().lat().toFixed(5))
+          $('#listing_longitude').val humanizeLng(marker.getPosition().lng().toFixed(5))
         click: (map, event, data) ->
           mapZoom = map.getZoom()
           setTimeout (->
@@ -131,6 +130,8 @@
               marker.setPosition event.latLng
               map.panTo event.latLng 
           ), 180
+      callback: ->
+        map = $(@).gmap3('get')
     },{
       action: 'addMarker'
       latLng: [12.2,121.95]
@@ -155,6 +156,7 @@
       $('#map_canvas').gmap3
         action: 'fitBounds'
         args: [ui.item.bounds]
+      marker.setPosition map.getCenter()
         
   $('#search_zoom').click ->
     $('#map_canvas').gmap3
@@ -163,15 +165,31 @@
       callback: (results) ->
         bounds = results[0].geometry.bounds if results
         if bounds
-          $('#no_results').html ""
+          $('#address_no_results_container').html ""
           $(@).gmap3
             action: 'fitBounds'
             args: [bounds]
-          map = $(@).gmap3('get')
           marker.setPosition map.getCenter()
         else
-          $('#no_results').html "No place or address found."
+          $('#address_no_results_container').html "We couldn't find this location."
     return false
+  
+  
+  $('#position_zoom').click ->
+    if latLng = convertLatLng $('#listing_latitude').val(), $('#listing_longitude').val()
+      latLng = new google.maps.LatLng(latLng[0], latLng[1])
+      maxZoomService.getMaxZoomAtLatLng latLng, (response) ->
+        if response.status == google.maps.MaxZoomStatus.OK
+          $('#position_error_container').html ""
+          map.panTo latLng
+          map.setZoom response.zoom
+          marker.setPosition latLng
+        else
+          return false
+    else
+      $('#position_error_container').html "The values you entered are not valid."
+    return false
+    
 
   listAsLandCheck = ->
     if $('#listing_includes_residence_values').is(':checked') and $('#listing_includes_land_values').is(':checked')
