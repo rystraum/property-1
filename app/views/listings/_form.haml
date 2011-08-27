@@ -15,7 +15,7 @@
       = f.input :address, label: false do
         = f.input_field :address, as: :text, placeholder: "Search for a place or address"
         %button#search_zoom Search
-        #address_no_results_container
+      .error_container
       = f.input :save_address, as: :boolean, hint: "You can save this as this properties address, but you  must ensure that the marker is set accurately. Properties are always listed according to their marker, not address.", label: "Save as the property's address"
     #position
       %h3 Marker Position
@@ -23,7 +23,7 @@
       = f.input :longitude do
         = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
         %button#position_zoom Zoom
-        #position_error_container
+      .error_container
     
   .clearfix
   %h3 Details
@@ -153,9 +153,7 @@
             bounds: item.geometry.bounds
     select: (event, ui) ->
       $('#no_results').html ""
-      $('#map_canvas').gmap3
-        action: 'fitBounds'
-        args: [ui.item.bounds]
+      map.fitBounds [ui.item.bounds]
       marker.setPosition map.getCenter()
         
   $('#search_zoom').click ->
@@ -166,14 +164,19 @@
         bounds = results[0].geometry.bounds if results
         if bounds
           $('#address_no_results_container').html ""
-          $(@).gmap3
-            action: 'fitBounds'
-            args: [bounds]
+          map.fitBounds [bounds]
           marker.setPosition map.getCenter()
         else
-          $('#address_no_results_container').html "We couldn't find this location."
+          flashInlineError $('#address .error_container'), "We couldn't find this location."
     return false
   
+  
+  flashInlineError = (container, text) ->
+    error = $("<div class='error'>" + text + "</div>").hide()
+    $('.error', container).remove()
+    container.append error
+    error.fadeIn(50).delay(3000).fadeOut(200, -> $(@).remove())
+    
   
   $('#position_zoom').click ->
     if latLng = convertLatLng $('#listing_latitude').val(), $('#listing_longitude').val()
@@ -187,7 +190,7 @@
         else
           return false
     else
-      $('#position_error_container').html "The values you entered are not valid."
+      flashInlineError $('#position .error_container'), "This is not a valid position."
     return false
     
 

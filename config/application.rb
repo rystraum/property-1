@@ -43,6 +43,9 @@ module Site
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    
+    config.sass.preferred_syntax = :sass
+    
     # Add lib & subdirs to autoload path
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]

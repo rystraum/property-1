@@ -23,6 +23,8 @@ $dark_orange: #D4C06E
 $light_green: #CEF19A
 $dark_green: #A5C17C
 
+$error_red: red
+
 // Sticky Footer
 // Based on a [blog post by Ryan Fait](http://ryanfait.com/resources/footer-stick-to-bottom-of-page/).
 // Must be mixed into the top level of your stylesheet.
@@ -152,8 +154,12 @@ input[type='text'], input[type='submit'], select
   
   p 
     margin-bottom: 0
-  
 
+
+////  ERROR HANDLING ////
+
+.error
+  color: $error_red
 
 .error_messages 
   background: #ffc0c3
