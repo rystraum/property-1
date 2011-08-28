@@ -9,7 +9,7 @@ $dark_gray: #323232
 $very_light_yellow: #FAFFEE
 $light_yellow: #FFF9D6
 $dark_blue: #003499
-$very_light_pink: #FFEFF5
+$very_light_pink: #FEE5F4
 $very_light_blue: #F0F3FD
 $light_blue: #14BBEA
 $pink: #FF0080
@@ -161,9 +161,23 @@ input[type='text'], input[type='submit'], select
 .error
   color: $error_red
 
-.error_messages 
-  background: #ffc0c3
-  padding: 10px
+.error_messages
+  border-bottom: solid 2px red
   margin-bottom: 40px
+  color: red
+  h3
+    border-bottom: solid 2px red
+    margin: 0
+    padding: 0
+  p
+    font-weight: bold
+  ul
+    position: relative
+    left: 20px
+    margin-bottom: 15px
+  li
+    list-style: disc
+    margin-bottom: 0.3em
+    
 
 

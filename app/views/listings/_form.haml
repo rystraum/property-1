@@ -5,200 +5,101 @@
 
   = f.error_messages
   
-  %p Locate your property on the map by zooming in as close as possible. To zoom, double-click the map or use the zoom control.
-  %p The marker represents your property location. Move it by clicking the map.
+  #map_instructions
+    %p Locate your property on the map by zooming in as close as possible. Double-click the map or use the zoom control to zoom.
+    %p The marker represents your property location. Move it by clicking the map.
 
-  #map
+  #map_container
     #map_canvas
-  #location
-    #address
-      = f.input :address, label: false do
-        = f.input_field :address, as: :text, placeholder: "Search for a place or address"
-        %button#search_zoom Search
-      .error_container
-      = f.input :save_address, as: :boolean, hint: "You can save this as this properties address, but you  must ensure that the marker is set accurately. Properties are always listed according to their marker, not address.", label: "Save as the property's address"
-    #position
-      %h3 Marker Position
-      = f.input :latitude, as: :string, input_html: { autocomplete: 'off' }
-      = f.input :longitude do
-        = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
-        %button#position_zoom Zoom
-      .error_container
+    #search_fields
+      #address
+        = f.input :address, label: false do
+          = f.input_field :address, as: :text, placeholder: "Search for a place or address"
+          %button#search_zoom Search
+        .error_container
+        = f.input :save_address, as: :boolean, hint: "You can save this as the property's address, but be sure the marker is set accurately. The property will be listed at the marker, not this address.", label: "Save as the property's address"
+      #position
+        %h3 Marker Position
+        = f.input :latitude, as: :string, input_html: { autocomplete: 'off' }
+        = f.input :longitude do
+          = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
+          %button#position_zoom Zoom
+        .error_container
     
   .clearfix
-  %h3 Details
-  #listing_contains.input
-    %abbr(title='required') *
-    This listing contains
-    %p
-      #residence_values
-        #{f.check_box :includes_residence_values} A residence
-      #land_values
-        #{f.check_box :includes_land_values} Land
-        #list_as_land
-          #{f.check_box :list_as_land} The land is probably worth more than the residence
 
-  #residence_fields
-    %fieldset
-      %legend Residence
-      - f.with_options required: true do |w|
-        = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
-        = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
-      = f.input :residence_area, label: 'Area', required: true do
-        #{f.input_field :residence_area, as: :string} #{m2}
-    
-  #land_fields
-    %fieldset
-      %legend Land
-      = f.input :land_area, label: 'Area', required: true do
-        #{f.input_field :land_area, as: :string} #{m2}
-
-  %h3 Description
-  = f.input :description, label: false
-
-  %h4 Special Features
-  = f.input :beach_front
-  = f.input :near_beach
-     
-  %h3 For Sale
-  .instruction 
-    %p Add a selling price if the property is for sale.  
-    %p Prices are in Philippines pesos.
-  = f.input :selling_price, as: :string, input_html: { maxlength: 11 }
-
-  %h3 For Rent
-  .instruction 
-    %p Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer.
-    %p Prices are in Philippine pesos.
-  #rental_rates
-    %h4 Rental Rates
-    - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
-      = w.input :rent_per_day, label: "Daily"
-      = w.input :rent_per_week, label: "Weekly"
-      = w.input :rent_per_month, label: "Monthly"
-      = w.input :rent_per_month_biannual_contract, label: "Monthly with a 6-month contract"
-      = w.input :rent_per_month_annual_contract, label: "Monthly with a 1-year contract"
-
-  %h4 Availability
-  = f.input :available_on, hint: "If the property is not currently available, on what date do you expect it to become available?"
-
-
-  %h3 Contact Information
-
-  = f.input :includes_alt_contact_values, as: :boolean, label: "Listing has an alternate contact", hint: "Check this box if somone other than you is the contact for this property."
-  = f.input :anonymous, label: "Hide your own contact details and only show the alternate."
-  #contact_fields
-    = f.input :contact_name, label: "Name"
-    .instruction
+  #everything_else
+    %h3 Details
+    #listing_contains.input
       %abbr(title='required') *
-      You must provide a phone number or an email address.
-    = f.input :contact_phone, label: "Phone"
-    = f.input :contact_email, label: "Email"
-    = f.input :contact_note, label: "Any other information you want to add for this contact?"
+      This listing contains
+      %p
+        #residence_values
+          #{f.check_box :includes_residence_values} A residence
+        #land_values
+          #{f.check_box :includes_land_values} Land
+          #list_as_land
+            #{f.check_box :list_as_land} The land is probably worth more than the residence
+
+    #residence_fields
+      %fieldset
+        %legend Residence
+        - f.with_options required: true do |w|
+          = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
+          = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
+        = f.input :residence_area, label: 'Area', required: true do
+          #{f.input_field :residence_area, as: :string} #{m2}
+      
+    #land_fields
+      %fieldset
+        %legend Land
+        = f.input :land_area, label: 'Area', required: true do
+          #{f.input_field :land_area, as: :string} #{m2}
+
+    %h3 Description
+    = f.input :description, label: false
+
+    %h4 Special Features
+    = f.input :beach_front
+    = f.input :near_beach
+       
+    %h3 For Sale
+    .instruction 
+      %p Add a selling price if the property is for sale.  
+      %p Prices are in Philippines pesos.
+    = f.input :selling_price, as: :string, input_html: { maxlength: 11 }
+
+    %h3 For Rent
+    .instruction 
+      %p Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer.
+      %p Prices are in Philippine pesos.
+    #rental_rates
+      %h4 Rental Rates
+      - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
+        = w.input :rent_per_day, label: "Daily"
+        = w.input :rent_per_week, label: "Weekly"
+        = w.input :rent_per_month, label: "Monthly"
+        = w.input :rent_per_month_biannual_contract, label: "Monthly with a 6-month contract"
+        = w.input :rent_per_month_annual_contract, label: "Monthly with a 1-year contract"
+
+    %h4 Availability
+    = f.input :available_on, hint: "If the property is not currently available, on what date do you expect it to become available?"
 
 
-  %h3 What is your interest in this property?
-  = f.input :lister_interest, label: false, hint: "Are you the owner, an agent, a friend, etc?"
-  = f.button :submit
+    %h3 Contact Information
+
+    = f.input :includes_alt_contact_values, as: :boolean, label: "Listing has an alternate contact", hint: "Check this box if somone other than you is the contact for this property."
+    = f.input :anonymous, label: "Hide your own contact details and only show the alternate."
+    #contact_fields
+      = f.input :contact_name, label: "Name"
+      .instruction
+        %abbr(title='required') *
+        You must provide a phone number or an email address.
+      = f.input :contact_phone, label: "Phone"
+      = f.input :contact_email, label: "Email"
+      = f.input :contact_note, label: "Any other information you want to add for this contact?"
 
 
-:coffeescript
-
-  marker = null
-  map = null
-  maxZoomService = new google.maps.MaxZoomService()
-  
-  $('#map_canvas').gmap3(
-    {
-      action: 'init'
-      options:
-        mapTypeId: google.maps.MapTypeId.HYBRID
-        panControl: true
-        center: [12.2,121.95]
-        zoom: 6
-        minZoom: 6
-        scaleControl: true
-        streetViewControl: false
-      events:
-        idle: (map, event, data) ->
-          $('#listing_latitude').val humanizeLat(marker.getPosition().lat().toFixed(5))
-          $('#listing_longitude').val humanizeLng(marker.getPosition().lng().toFixed(5))
-        click: (map, event, data) ->
-          mapZoom = map.getZoom()
-          setTimeout (->
-            if mapZoom == map.getZoom()
-              marker.setPosition event.latLng
-              map.panTo event.latLng 
-          ), 180
-      callback: ->
-        map = $(@).gmap3('get')
-    },{
-      action: 'addMarker'
-      latLng: [12.2,121.95]
-      callBack: (newMarker) ->
-        marker = newMarker
-    }
-  )
-  
-  $('#listing_address').autocomplete
-    source: (request, response) ->
-      $('#map_canvas').gmap3
-        action: 'getAddress'
-        address: request.term + ', Philippines'
-        callback: (results) ->
-          return unless results and results[0].geometry.bounds
-          response $.map results, (item) ->
-            label:  item.formatted_address
-            value: item.formatted_address
-            bounds: item.geometry.bounds
-    select: (event, ui) ->
-      $('#no_results').html ""
-      map.fitBounds [ui.item.bounds]
-      marker.setPosition map.getCenter()
-        
-  $('#search_zoom').click ->
-    $('#map_canvas').gmap3
-      action: 'getAddress'
-      address: $('#listing_address').val().replace(/\n/, ";") + '; Philippines'
-      callback: (results) ->
-        bounds = results[0].geometry.bounds if results
-        if bounds
-          $('#address_no_results_container').html ""
-          map.fitBounds [bounds]
-          marker.setPosition map.getCenter()
-        else
-          flashInlineError $('#address .error_container'), "We couldn't find this location."
-    return false
-  
-  
-  flashInlineError = (container, text) ->
-    error = $("<div class='error'>" + text + "</div>").hide()
-    $('.error', container).remove()
-    container.append error
-    error.fadeIn(50).delay(3000).fadeOut(200, -> $(@).remove())
-    
-  
-  $('#position_zoom').click ->
-    if latLng = convertLatLng $('#listing_latitude').val(), $('#listing_longitude').val()
-      latLng = new google.maps.LatLng(latLng[0], latLng[1])
-      maxZoomService.getMaxZoomAtLatLng latLng, (response) ->
-        if response.status == google.maps.MaxZoomStatus.OK
-          $('#position_error_container').html ""
-          map.panTo latLng
-          map.setZoom response.zoom
-          marker.setPosition latLng
-        else
-          return false
-    else
-      flashInlineError $('#position .error_container'), "This is not a valid position."
-    return false
-    
-
-  listAsLandCheck = ->
-    if $('#listing_includes_residence_values').is(':checked') and $('#listing_includes_land_values').is(':checked')
-      $('#list_as_land').enable()
-    else
-      $('#list_as_land').disable()
-  listAsLandCheck()
-  $('#listing_includes_residence_values, #listing_includes_land_values').click ->
-    listAsLandCheck()
+    %h3 What is your interest in this property?
+    = f.input :lister_interest, label: false, hint: "Are you the owner, an agent, a friend, etc?"
+    = f.button :submit

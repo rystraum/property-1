@@ -1,3 +1,5 @@
+@import 'grid-960'
+
 $very_light_gray: #F3F3F3
 $light_gray: #D2D2D2
 $med_gray: gray
@@ -127,25 +129,36 @@ body.listings--index
       margin-top: 60px
 
 
+#outer_wrapper
+  +grid-container
 
 body.listings--
   &new, &edit, &create
-  
-    #map
-      float: left
-      width: 600px
     
-    #location
-      float: right
-      width: 340px
+    .error_messages, #map_instructions
+      +grid(12)
+      +alpha
+      +omega
+      +suffix(4)
+  
+    #map_canvas
+      +grid(12)
+      +alpha
+      height: 550px
+      // margin: 0 0 20px 0
+      background: $very_light_gray
+
+    #search_fields
+      +grid(4)
+      +omega
       h3
         margin-top: 0
   
       #position
         label
-          width: 100px
+          // width: 100px
         input
-          width: 165px
+          // width: 165px
         .error
           margin-left: 100px
   
@@ -154,7 +167,7 @@ body.listings--
   
       #listing_address
         height: 100px
-        width: 265px
+        // width: 265px
         resize: none
     
       #listing_save_address
@@ -168,13 +181,9 @@ body.listings--
           margin: 0
           padding: 0
           
-  
-    #map_canvas
-      height: 550px
-      width: 100%
-      margin: 0 0 20px 0
-      background: $very_light_gray
-
+    #everything_else
+      +grid(12)
+      +alpha
 
     #listing_contains
       height: 100px

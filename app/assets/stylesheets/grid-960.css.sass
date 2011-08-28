@@ -1,0 +1,115 @@
+// /*
+  // 960 Grid System ~ Core CSS.
+  // Learn more ~ http://960.gs/
+
+  // Licensed under GPL and MIT.
+// */
+
+// /*
+  // Forces backgrounds to span full width,
+  // even if there is horizontal scrolling.
+  // Increase this if your layout is wider.
+
+  // Note: IE6 works fine without this fix.
+// */
+
+
+// Core classes 
+
+=grid-core
+  display: inline
+  float: left
+  margin-left: 10px
+  margin-right: 10px
+
+=clearfix-base
+  content: '.'
+  display: block
+  overflow: hidden
+  visibility: hidden
+  font-size: 0
+  line-height: 0
+  width: 0
+  height: 0
+
+
+
+// Container
+
+=grid-container
+  margin-left: auto
+  margin-right: auto
+  width: 960px
+  zoom: 1
+  &:before
+    +clearfix-base
+  &:after
+    +clearfix-base
+    clear: both
+
+
+
+// Clear Floated Elements
+
+=clear
+  clear: both
+  display: block
+  overflow: hidden
+  visibility: hidden
+  width: 0
+  height: 0
+
+
+// Clearfix
+
+=clearfix
+  zoom: 1
+  &:before
+    +clearfix-base
+  &:after
+    +clearfix-base
+    clear: both
+
+
+
+// Grid >> Global
+
+=grid($columns)
+  +grid-core
+  @if $columns == 1
+    width: 40px
+  @else
+    width: 40px + 60px * ($columns - 1)
+
+
+=push($columns)
+  position: relative
+  left: 60px * $columns
+
+=pull($columns)
+  position: relative
+  left: -60px * $columns
+
+=prefix($columns)
+  padding-left: 60px * $columns
+
+=suffix($columns)
+  padding-right: 60px * $columns
+
+
+/* Grid >> Children (Alpha ~ First, Omega ~ Last)
+///////////////////////////////////////////////////////////////////////////////////////////////////-*/
+
+=alpha 
+  margin-left: 0
+
+
+=omega 
+  margin-right: 0
+
+
+body 
+  min-width: 960px
+
+
+
