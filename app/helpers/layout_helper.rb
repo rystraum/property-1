@@ -17,6 +17,8 @@ module LayoutHelper
   end
 
   def javascript(*args)
-    content_for(:head) { javascript_include_tag(*args) }
+    args.each do |arg|
+      content_for(:scripts) { "<script src='/assets/#{arg}.js' type='text/javascript'></script>".html_safe }
+    end
   end
 end

@@ -1,3 +1,5 @@
+@import 'grid-960'
+
 $font-color: #3B3B3B
 $light-color: silver
 
@@ -25,58 +27,53 @@ $dark_green: #A5C17C
 
 $error_red: red
 
-// Sticky Footer
-// Based on a [blog post by Ryan Fait](http://ryanfait.com/resources/footer-stick-to-bottom-of-page/).
-// Must be mixed into the top level of your stylesheet.
-// Footer element must be outside of root wrapper element.
-// Footer must be a fixed height.
+$grid_width: 960px
 
-$footer-height: 50px
 
-html, body 
-  height: 100% 
+// Sticky footer
+// http://ryanfait.com/sticky-footer/
 
-#outer_wrapper
-  clear: both
+html, body
+  margin: 0
+  height: 100%
+.wrapper
+  margin: 0
   min-height: 100%
   height: auto !important
   height: 100%
-  margin-bottom: -$footer-height
-  #outer_wrapper_bottom
-    height: $footer-height  
+  margin: 0 auto -142px
+footer, .push_footer
+  margin: 0
+  height: 142px
 
-footer
-  clear: both
-  position: relative
-  height: $footer-height  
+//
+
 
 body 
-  font-family: Verdana, Arial, Tahoma
-  font-size: 15px
-  margin: 0 auto
-  padding: 0
-  color: #7e7e7e
+  +body
+
+header
+  border-top: solid 5px $ocean_blue
+  background: $very_light_gray
+  height: 62px
+  margin: 0 0 20px 0
+
+footer
+  background: $very_light_gray
+  #inner_footer
+    text-align: center
+    padding-top: 20px
+
+.grid_content
+  +grid-container
 
 a, a:visited
   text-decoration: none
   color: $pink
 
-
-
 a:hover
   background: $gold
 
-#outer_wrapper
-  #outer_wrapper_top
-    border-top: solid 5px $ocean_blue
-    background: $very_light_gray
-    height: 65px
-    
-
-#inner_wrapper 
-  width: 980px
-  margin: 0 auto
-  padding: 0
 
 
 #login 
@@ -87,10 +84,6 @@ a:hover
     li 
       display: inline
       margin-right: 15px
-
-header
-  height: 82px
-  margin-top: -57px
 
 
 #logo
@@ -110,10 +103,6 @@ header
     font-family: georgia
     
 
-content 
-  width: 580px
-  padding: 0px 0px 0px 40px
-
 
 sidebar  
   float: left
@@ -122,12 +111,6 @@ sidebar
   padding: 30px 0px 0px 0px
 
 
-footer
-  background: $very_light_gray
-  #footer_content
-    padding-top: 15px
-    margin: 0 auto
-    width: 980px
 
 
 input[type='text'], input[type='submit'], select
@@ -137,23 +120,17 @@ input[type='text'], input[type='submit'], select
   color: $light_gray
 
 #flash 
+  width: $grid_width - (10px + 1px) * 2
+  padding: 10px
   font-weight: bold
   margin-bottom: 20px
-  > div 
-    padding: 15px
-    border: solid 1px silver
-    margin-bottom: 8px
-  
-  .notice 
+  &.notice 
     background: $light_green
     border: solid 1px $dark_green
-  
-  .alert 
+  &.alert 
     background: $light_orange
     border: solid 1px $dark_orange
-  
-  p 
-    margin-bottom: 0
+    margin-bottom: 8px 
 
 
 ////  ERROR HANDLING ////
