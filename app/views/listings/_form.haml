@@ -15,16 +15,16 @@
     #search_fields
       #address
         = f.input :address, label: false do
-          = f.input_field :address, as: :text, placeholder: "Search for a place or address"
-          %button#search_zoom Search
+          = f.input_field :address, as: :text, placeholder: "Locate a place or address"
+        %button#search_zoom Locate 
         .error_container
-        = f.input :save_address, as: :boolean, hint: "You can save this as the property's address, but be sure the marker is set accurately. The property will be listed at the marker, not this address.", label: "Save as the property's address"
+      = f.input :save_address, as: :boolean, hint: "You can save this as the property's address, but be sure the marker is set accurately. The property will be listed at the marker, not this address.", label: "Save as the property's address"
       #position
         %h3 Marker Position
         = f.input :latitude, as: :string, input_html: { autocomplete: 'off' }
         = f.input :longitude do
           = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
-          %button#position_zoom Zoom
+        %button#position_zoom Zoom
         .error_container
     
   .clearfix

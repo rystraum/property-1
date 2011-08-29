@@ -142,32 +142,26 @@ body.listings--
       +suffix(4)
   
     #map_canvas
-      +grid(12)
+      +grid(11)
       +alpha
       height: 550px
       // margin: 0 0 20px 0
       background: $very_light_gray
 
     #search_fields
-      +grid(4)
+      +grid(5)
       +omega
-      h3
-        margin-top: 0
-  
-      #position
-        label
-          // width: 100px
-        input
-          // width: 165px
-        .error
-          margin-left: 100px
-  
-      #address button
-        vertical-align: bottom
+      
+      // #listing_address autocomplete results width is being set via jquery.
+
+      #address, #position
+        margin-bottom: 0
+
+        button
+          float: right
   
       #listing_address
         height: 100px
-        // width: 265px
         resize: none
     
       #listing_save_address

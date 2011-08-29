@@ -1,5 +1,6 @@
 $ ->
   
+
   #### _form ####
   
   #### Map config
@@ -49,6 +50,8 @@ $ ->
             label: item.formatted_address
             value: item.formatted_address
             bounds: item.geometry.bounds
+    open: ->
+      $('.ui-menu').width(210) 
     select: (e, ui) ->
       bounds = new google.maps.LatLngBounds()
       map.fitBounds ui.item.bounds
