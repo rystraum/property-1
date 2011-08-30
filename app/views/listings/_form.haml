@@ -7,28 +7,32 @@
   = f.error_messages
   
   #map_instructions
-    %p Locate your property on the map by zooming in as close as possible. Double-click the map or use the zoom control to zoom.
-    %p The marker represents your property location. Move it by clicking the map.
+    %h3 Locate Your Property
+    %ol
+      %li Locate your property on the map by zooming in as close as possible.
+      %li To zoom, double-click the map or use the zoom control. You can also zoom direclty to a place or address using the address search.
+      %li The marker represents your property's location. You can move it by clicking the map.
+      %li
+        %strong Set the marker accurately. 
+        Your property will be listed at the marker.
+      %li Provide a street address if you have one to help people locate your property.
 
   #map_container
     #map_canvas
     #search_fields
       #address
-        = f.input :address, label: false do
+        = f.input :address, label: "Address" do
           = f.input_field :address, as: :text, placeholder: "Locate a place or address"
-        %button#search_zoom Locate 
+        %button#search_zoom Search 
         .error_container
-      = f.input :save_address, as: :boolean, hint: "You can save this as the property's address, but be sure the marker is set accurately. The property will be listed at the marker, not this address.", label: "Save as the property's address"
+      = f.input :save_address, as: :boolean, hint: "Save the this address if it's accurate.", label: "Save address"
       #position
-        %h3 Marker Position
-        = f.input :latitude, as: :string, input_html: { autocomplete: 'off' }
-        = f.input :longitude do
+        = f.input :latitude, label: 'Marker latitude', as: :string, input_html: { autocomplete: 'off' }
+        = f.input :longitude, label: 'Marker longitude' do
           = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
         %button#position_zoom Zoom
         .error_container
     
-  .clearfix
-
   #everything_else
     %h3 Details
     #listing_contains.input
@@ -41,24 +45,24 @@
           #{f.check_box :includes_land_values} Land
           #list_as_land
             #{f.check_box :list_as_land} The land is probably worth more than the residence
+            .hint If the land is worth more than residence, we'll also list your property in the land category.
 
-    #residence_fields
-      %fieldset
-        %legend Residence
-        - f.with_options required: true do |w|
-          = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
-          = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
-        = f.input :residence_area, label: 'Area', required: true do
-          #{f.input_field :residence_area, as: :string} #{m2}
-      
-    #land_fields
-      %fieldset
-        %legend Land
-        = f.input :land_area, label: 'Area', required: true do
-          #{f.input_field :land_area, as: :string} #{m2}
+      #residence_fields
+        %fieldset
+          %legend Residence
+          - f.with_options required: true do |w|
+            = w.input :residence_type, label: 'Type', collection: Listing::RESIDENCE_TYPES, label_method: :last, value_method: :first
+            = w.input :residence_construction, label: 'Construction', collection: Listing::RESIDENCE_CONSTRUCTIONS, label_method: :last, value_method: :first
+          = f.input :residence_area, label: 'Area', required: true do
+            #{f.input_field :residence_area, as: :string} #{m2}
+        
+      #land_fields
+        %fieldset
+          %legend Land
+          = f.input :land_area, label: 'Area', required: true do
+            #{f.input_field :land_area, as: :string} #{m2}
 
-    %h3 Description
-    = f.input :description, label: false
+    = f.input :description, label: 'Property description'
 
     %h4 Special Features
     = f.input :beach_front
@@ -66,22 +70,21 @@
        
     %h3 For Sale
     .instruction 
-      %p Add a selling price if the property is for sale.  
-      %p Prices are in Philippines pesos.
+      Add a selling price if the property is for sale. Prices are in Philippines pesos.
     = f.input :selling_price, as: :string, input_html: { maxlength: 11 }
 
     %h3 For Rent
     .instruction 
-      %p Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer.
-      %p Prices are in Philippine pesos.
+      Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer. Prices are in Philippine pesos.
     #rental_rates
-      %h4 Rental Rates
-      - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
-        = w.input :rent_per_day, label: "Daily"
-        = w.input :rent_per_week, label: "Weekly"
-        = w.input :rent_per_month, label: "Monthly"
-        = w.input :rent_per_month_biannual_contract, label: "Monthly with a 6-month contract"
-        = w.input :rent_per_month_annual_contract, label: "Monthly with a 1-year contract"
+      %fieldset
+        %legend Rental Rates
+        - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
+          = w.input :rent_per_day, label: "Daily"
+          = w.input :rent_per_week, label: "Weekly"
+          = w.input :rent_per_month, label: "Monthly"
+          = w.input :rent_per_month_biannual_contract, label: "Monthly<br/><small>6-month contract</small>".html_safe
+          = w.input :rent_per_month_annual_contract, label: "Monthly<br/><small>1-year contract</small>".html_safe
 
     %h4 Availability
     = f.input :available_on, hint: "If the property is not currently available, on what date do you expect it to become available?"
@@ -90,12 +93,12 @@
     %h3 Contact Information
 
     = f.input :includes_alt_contact_values, as: :boolean, label: "Listing has an alternate contact", hint: "Check this box if somone other than you is the contact for this property."
-    = f.input :anonymous, label: "Hide your own contact details and only show the alternate."
     #contact_fields
+      = f.input :anonymous, label: "Hide your own contact details and only show the alternate"
       = f.input :contact_name, label: "Name"
       .instruction
         %abbr(title='required') *
-        You must provide a phone number or an email address.
+        Please provide a phone number or an email address.
       = f.input :contact_phone, label: "Phone"
       = f.input :contact_email, label: "Email"
       = f.input :contact_note, label: "Any other information you want to add for this contact?"

@@ -5,10 +5,9 @@ $light_gray: #D2D2D2
 $med_gray: gray
 $dark_gray: #323232
 
-$pink: #FF0080
-$gold: #FBAC0C
-$ocean_blue: #4F6BAE
-$land_green: #A5C888
+$CP_PINK: #FF0080
+$CP_BLUE: #0678BE
+
 
 
 // Temp
@@ -35,7 +34,14 @@ body.listings--index
     margin-bottom: 30px
     font-weight: bold
     font-size: 1.1em    
-    
+
+  #find_listing_button, #go_search_address
+    font-size: 0.9em 
+    padding: 0.3em 0.5em 1.4em 0.5em
+    position: relative
+    top: 0.5em
+
+
   #left_column
     width: 600px
     float: left
@@ -57,7 +63,7 @@ body.listings--index
       margin: 0
       font-size: 13px
       .label
-        color: $ocean_blue
+        color: $CP_BLUE
       // The listing item container
       > li
         display: inline-block
@@ -83,7 +89,7 @@ body.listings--index
           padding-bottom: 7px
         p.caption
           font-weight: bold
-          color: $ocean_blue
+          color: $CP_BLUE
           margin-bottom: 10px 
   
   #right_column
@@ -116,11 +122,9 @@ body.listings--index
       font-size: 12px
       color: red
       
-    #search_address, #go_search_address
-      font-size: 1.1em
     #search_address
       margin-top: 5px
-      width: 290px
+      width: 240px
       
     #sale_or_rent
       margin-top: 25px
@@ -129,23 +133,27 @@ body.listings--index
       margin-top: 60px
 
 
-#outer_wrapper
-  +grid-container
-
 body.listings--
   &new, &edit, &create
     
     .error_messages, #map_instructions
-      +grid(12)
+      +grid(11)
       +alpha
       +omega
-      +suffix(4)
+      +suffix(5)
   
+    #map_instructions
+      li
+        margin-bottom: 0.5em
+        list-style: decimal
+
+    #map_container
+      +clearfix
+
     #map_canvas
       +grid(11)
       +alpha
       height: 550px
-      // margin: 0 0 20px 0
       background: $very_light_gray
 
     #search_fields
@@ -155,8 +163,6 @@ body.listings--
       // #listing_address autocomplete results width is being set via jquery.
 
       #address, #position
-        margin-bottom: 0
-
         button
           float: right
   
@@ -176,14 +182,64 @@ body.listings--
           padding: 0
           
     #everything_else
-      +grid(12)
+      +grid(11)
       +alpha
 
     #listing_contains
-      height: 100px
-    #land_values, #residence_values
-      float: left
+      +clearfix
+      margin-bottom: 2em
+
+    #residence_values
+      +grid(3)
+      +alpha
     #land_values
-      display: inline
-    #land_values
-      padding-left: 70px  
+      +grid(8)
+      +alpha
+      +omega
+    #listing_includes_land_values
+      margin-bottom: 1em
+    #residence_fields, #land_fields
+      label
+        +grid(3)
+        +alpha
+    #listing_residence_type, #listing_residence_construction, #listing_residence_area, #listing_land_area
+      width: 150px
+    #listing_residence_type, #listing_residence_construction
+      margin-bottom: 0.7em
+
+    label[for='listing_description']
+      margin-top: 2em
+    
+    #rental_rates label, 
+    label[for='listing_selling_price'], 
+    label[for='listing_available_on_1i']
+      +grid(3)
+      +alpha
+
+    #rental_rates input, 
+    #listing_selling_price, 
+      width: 120px
+
+    #listing_rent_per_month_biannual_contract
+      margin-bottom: 2em
+
+    #listing_anonymous
+      margin-bottom: 1.5em
+    #contact_fields 
+      #listing_contact_phone,
+      #listing_contact_email
+        width: 200px
+      #listing_contact_name
+        width: 300px
+      label[for='listing_contact_name'],
+      label[for='listing_contact_email'],
+      label[for='listing_contact_phone']
+        +grid(2)
+        +alpha
+      label[for='listing_contact_note']
+        +grid(10)
+        +alpha
+      label[for='listing_contact_note']
+        margin-top: 2em
+      #listing_contact_note
+        height: 200px

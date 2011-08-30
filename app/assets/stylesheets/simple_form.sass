@@ -1,0 +1,112 @@
+$ADJACENT_LABEL_WIDTH: 50px
+$INSTRUCTION_COLOR: #796D6F
+$SPACE_BETWEEN_INPUTS: 3em
+$CP_BLUE: #0678BE
+
+.simple_form 
+    
+  input.string 
+    margin-bottom: 15px
+  
+  
+  // The required astrisk
+  abbr[title='required'] 
+    border-bottom: none
+    color: red
+    margin-left: -0.7em
+    position: relative
+    top: 0.2em
+  
+
+  fieldset 
+    border-top: solid 1px silver
+    padding-top: 10px
+    margin-top: 10px
+  
+
+  legend 
+    font-weight: bold
+    color: $CP_BLUE
+  
+  label.boolean 
+    font-weight: normal
+  
+  div.boolean
+    padding: 0.5em 0 0.5em 0
+
+
+  div.boolean label, label.collection_radio 
+    float: none
+    margin: 0
+
+
+  label.collection_radio 
+    margin-right: 10px
+    vertical-align: -2px
+    margin-left:   2px
+
+
+
+
+  label.collection_check_boxes 
+    float: none
+    margin: 0
+    vertical-align: -2px
+    margin-left:   2px
+
+
+  textarea, input.string 
+    width: 98%
+  
+  input[type='submit']
+    margin-top: 4em
+
+  
+  input.radio 
+    margin-right: 5px
+    vertical-align: -3px
+
+
+  input.check_boxes 
+    margin-left: 3px
+    vertical-align: -3px
+
+  .error 
+    clear:   left
+    color:   black
+    display: block
+    margin-left: 120px
+    font-size:    12px
+  
+  .field_with_errors 
+    label
+      color: red
+  
+  .instruction 
+    margin-bottom: 20px
+    color: $INSTRUCTION_COLOR
+    display: block
+    font-size: 0.95em
+    p 
+      margin: 0
+      margin-bottom: 0.4em
+    
+  
+
+  .input .hint 
+    clear: left
+    font-size: 0.95em
+    padding-bottom: 7px
+    color: $INSTRUCTION_COLOR
+    display: block
+  
+
+  div.boolean 
+    maring-left: 10px
+  
+
+  h3
+    margin-top: 2em
+  
+
+

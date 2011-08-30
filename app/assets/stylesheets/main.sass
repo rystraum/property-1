@@ -1,4 +1,9 @@
+// Design ideas:
+// http://awardwinningfjords.com/2009/04/02/dont-repeat-yourself-use-sass-modules.html
+// http://drupal.org/about
+
 @import 'grid-960'
+@import 'bourbon'
 
 $font-color: #3B3B3B
 $light-color: silver
@@ -16,7 +21,9 @@ $very_light_blue: #F0F3FD
 $light_blue: #14BBEA
 $pink: #FF0080
 $gold: #FBAC0C
-$ocean_blue: #4F6BAE
+$CP_BLUE: #0678BE
+$CP_BLUE_LT: tint($CP_BLUE, 25%)
+$CP_PINK: #FF0080
 $land_green: #A5C888
 
 $light_orange: #FFE684
@@ -51,12 +58,16 @@ footer, .push_footer
 
 body 
   +body
+  font-size: 16px
 
 header
-  border-top: solid 5px $ocean_blue
+  border-top: solid 5px $CP_BLUE
   background: $very_light_gray
   height: 62px
   margin: 0 0 20px 0
+
+content .grid_content
+  padding-bottom: 220px
 
 footer
   background: $very_light_gray
@@ -90,8 +101,9 @@ a:hover
   float: left
   // Stub for pretty font
   font-size: 30px
+  font-weight: bold
   a span.c
-    color: $ocean_blue
+    color: $CP_BLUE
   a span.p
     color: $pink
   a:hover
@@ -112,12 +124,11 @@ sidebar
 
 
 
-
 input[type='text'], input[type='submit'], select
   height: 22px
 
 .disabled
-  color: $light_gray
+  color: $light_gray !important
 
 #flash 
   width: $grid_width - (10px + 1px) * 2
@@ -133,15 +144,33 @@ input[type='text'], input[type='submit'], select
     margin-bottom: 8px 
 
 
+//// Forms
+
+input[type='submit'], button
+  +button(shiny, $CP_PINK) 
+  padding: 0.6em 0.5em 1.9em 0.5em
+  font-size: 1.1em 
+
+button
+  +button(shiny, $CP_BLUE_LT)
+
+//// Typography
+
+h3, h4
+  color: $CP_BLUE
+h4
+  font-weight: normal
+  margin-bottom: 0
+
+
 ////  ERROR HANDLING ////
 
 .error
   color: $error_red
 
 .error_messages
-  border-bottom: solid 2px red
-  margin-bottom: 40px
-  color: red
+  *
+    color: red
   h3
     border-bottom: solid 2px red
     margin: 0
