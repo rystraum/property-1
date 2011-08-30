@@ -9,14 +9,15 @@
     %strong
       = link_to "List your property", [:new, :listing]
       for free!
+  #find_exhort2
+    %strong Have a property ID?
   #map_canvas
   %ul#listings
     
 #right_column 
   #find_exhort
     = form_tag '/listings', method: :get, id: 'find_listing' do
-      %strong Have a property ID?
-      = text_field_tag :listing_id, nil, placeholder: "ID"
+      = text_field_tag :listing_id, nil, placeholder: "Property ID"
       = submit_tag "Go", id: 'find_listing_button'
   #search
     %h2 Show properties
@@ -41,7 +42,8 @@
           = f.input type, label: label
         = f.input :land
   #reset
-    = link_to "reset search", new_search_path
+    %strong
+      = link_to "reset search", new_search_path
 
 
 :coffeescript

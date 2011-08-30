@@ -43,13 +43,13 @@ $grid_width: 960px
 html, body
   margin: 0
   height: 100%
-.wrapper
+.sticky_footer_top_wrapper
   margin: 0
   min-height: 100%
   height: auto !important
   height: 100%
   margin: 0 auto -142px
-footer, .push_footer
+.sticky_footer_bottom_wrapper, .push_sticky_footer
   margin: 0
   height: 142px
 
@@ -60,23 +60,27 @@ body
   +body
   font-size: 16px
 
-header
+.outer_grid
+  +grid-container
+  
+#outer_header
   border-top: solid 5px $CP_BLUE
   background: $very_light_gray
-  height: 62px
-  margin: 0 0 20px 0
 
-content .grid_content
-  padding-bottom: 220px
+#outer_footer
+  background: $very_light_gray
+
+header
+  +grid(16)
+
+content
+  +grid(16)
+  padding: 20px 0 220px 0
 
 footer
-  background: $very_light_gray
-  #inner_footer
-    text-align: center
-    padding-top: 20px
+  text-align: center
+  padding-top: 20px
 
-.grid_content
-  +grid-container
 
 a, a:visited
   text-decoration: none
@@ -125,14 +129,14 @@ sidebar
 
 
 input[type='text'], input[type='submit'], select
-  height: 22px
+  // height: 22px
 
 .disabled
   color: $light_gray !important
 
 #flash 
-  width: $grid_width - (10px + 1px) * 2
   padding: 10px
+  width: $grid_width - (10px + 1px) * 2
   font-weight: bold
   margin-bottom: 20px
   &.notice 
@@ -148,11 +152,15 @@ input[type='text'], input[type='submit'], select
 
 input[type='submit'], button
   +button(shiny, $CP_PINK) 
-  padding: 0.6em 0.5em 1.9em 0.5em
-  font-size: 1.1em 
 
 button
   +button(shiny, $CP_BLUE_LT)
+
+input[type='text'], textarea
+  +border-radius(3px)
+
+input[type='text']
+  padding: 5px
 
 //// Typography
 

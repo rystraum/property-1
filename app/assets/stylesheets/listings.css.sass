@@ -11,136 +11,138 @@ $CP_BLUE: #0678BE
 
 
 // Temp
-li, ul
-  margin: 0
-  padding: 0
-li
-  list-style: none
+// li, ul
+  // margin: 0
+  // padding: 0
+// li
+  // list-style: none
 
-ul.tags
-  li
-    background: gray
-    color: white
-    display: inline-block
-    padding: 3px
-    font-size: 0.9em
+// ul.tags
+  // li
+    // background: gray
+    // color: white
+    // display: inline-block
+    // padding: 3px
+    // font-size: 0.9em
   
 
 body.listings--index
 
   // INDEX
 
-  #find_exhort, #list_exhort
+  #left_column
+    +grid(11)
+    +alpha
+
+  #right_column
+    +grid(5)
+    +omega
+    
+  #list_exhort
+    +grid(7)
+    +alpha
+  #find_exhort2
+    +grid(4)
+    +omega
+    text-align: right
+  #find_exhort, #list_exhort, #find_exhort2
     margin-bottom: 30px
-    font-weight: bold
     font-size: 1.1em    
 
-  #find_listing_button, #go_search_address
-    font-size: 0.9em 
-    padding: 0.3em 0.5em 1.4em 0.5em
+  #find_exhort
     position: relative
-    top: 0.5em
-
-
-  #left_column
-    width: 600px
-    float: left
-    
-    #list_exhort
-      a
-        text-decoration: underline
-      a:hover
-        text-decoration: none
+    top: -5px
+    margin-bottom: 23px
   
-    #map_canvas
-      height: 550px
-      width: 100%
-      margin: 0 0 20px 0
-      background: $very_light_gray
+  #listing_id, #search_address
+    width: 180px 
+  
+  #go_search_address, #find_listing_button
+    width: 80px
+  
+  #search 
+    postion: relative
+    top: -28px
+    border-top: solid 1px $very_light_gray
+    
+    
+    h2
+      font-weight: bold
+      font-size: 1.1em
+      margin-bottom: 5px
+    
+    // Checkboxes group title
+    .group_title
+      font-weight: bold
+      margin: 30px 0 15px 0
+  
+  #no_results
+    height: 14px
+    font-size: 12px
+    color: red
+    
+  #sale_or_rent
+    margin-top: 25px
+  
+  #reset
+    margin-top: 30px
 
-    ul#listings
-      padding: 0
+  #list_exhort
+    a
+      text-decoration: underline
+    a:hover
+      text-decoration: none
+
+  #map_canvas
+    height: 550px
+    width: 100%
+    margin: 0 0 20px 0
+    background: $very_light_gray
+
+  ul#listings
+    padding: 0
+    margin: 0
+    font-size: 13px
+    .label
+      color: $CP_BLUE
+    // The listing item container
+    > li
+      display: inline-block
+      width: 270px
       margin: 0
-      font-size: 13px
-      .label
-        color: $CP_BLUE
-      // The listing item container
-      > li
-        display: inline-block
-        width: 270px
+      padding: 10px
+      list-style: none
+      border-bottom: solid 1px $light_gray
+      background: $very_light_gray
+      height: 500px
+      &.listing_spacer
+        padding: 0
         margin: 0
-        padding: 10px
-        list-style: none
-        border-bottom: solid 1px $light_gray
-        background: $very_light_gray
-        height: 500px
-        &.listing_spacer
-          padding: 0
-          margin: 0
-          width: 0px
-          height: 0
-          background: red
-        img
-          height: 150px
-          width: 270px
-        li
-          border-bottom: solid 1px #fff
-          padding-top: 6px
-          padding-bottom: 7px
-        p.caption
-          font-weight: bold
-          color: $CP_BLUE
-          margin-bottom: 10px 
-  
-  #right_column
-    width: 340px
-    float: right
-    
-    #find_exhort
-      margin-bottom: 23px
-  
-    #listing_id
-      width: 90px
-    
-    #search 
-      postion: relative
-      top: -28px
-      border-top: solid 1px $very_light_gray
-      
-      h2
+        width: 0px
+        height: 0
+        background: red
+      img
+        height: 150px
+        width: 270px
+      li
+        border-bottom: solid 1px #fff
+        padding-top: 6px
+        padding-bottom: 7px
+      p.caption
         font-weight: bold
-        font-size: 1.1em
-        margin-bottom: 5px
-      
-      // Checkboxes group title
-      .group_title
-        font-weight: bold
-        margin: 30px 0 15px 0
-    
-    #no_results
-      height: 14px
-      font-size: 12px
-      color: red
-      
-    #search_address
-      margin-top: 5px
-      width: 240px
-      
-    #sale_or_rent
-      margin-top: 25px
-    
-    #reset
-      margin-top: 60px
+        color: $CP_BLUE
+        margin-bottom: 10px 
+  
+
 
 
 body.listings--
   &new, &edit, &create
     
     .error_messages, #map_instructions
-      +grid(11)
-      +alpha
-      +omega
-      +suffix(5)
+      +grid(16)
+      // +alpha
+      // +omega
   
     #map_instructions
       li

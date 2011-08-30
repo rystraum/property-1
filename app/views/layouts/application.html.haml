@@ -11,54 +11,59 @@
     = csrf_meta_tag
   
   %body(lang="en" class="#{ body_class }")
-    .wrapper
-      %header
-        .grid_content
-          #logo
-            = link_to "<span class='c'>Clear</span><span class='p'>Property</span>".html_safe, root_path
-            %h1 Property for sale and for rent in the Philippines
-          
-          = render 'login'
+    .sticky_footer_top_wrapper
+      #outer_header
+        .outer_grid
+          %header
+            #logo
+              = link_to "<span class='c'>Clear</span><span class='p'>Property</span>".html_safe, root_path
+              %h1 Property for sale and for rent in the Philippines
+            
+            = render 'login'
           
       - unless flash.empty?
-        .grid_content
-          - flash.each do |name, msg|
-            #flash(class="#{name}")
-              = msg
+        #outer_flash
+          .outer_grid
+            - flash.each do |name, msg|
+              #flash(class="#{name}")
+                = msg
 
       - if show_title?
         %h1= yield :title
 
-      %content
-        .grid_content
-          = yield
-      
-          - unless @sidebar == false
-            %sidebar
-              - unless @u
-                %h2 Menu
-                %ul
-                  %li= link_to "List your property for sale or rent", [:new, :listing]
-              - else
-                %h2
-                  - if @a
-                    #{@g.name}
-                  - else
-                    Menu
-                %ul
-                  %li= link_to "New property", [:new, :listing]
-                  %li= link_to "Your properties", :listings
-                  %li= link_to "Agency properties", [@g, :listings]
-            
-                - if admin?
-                  %h3 Admin
+      #outer_content
+        .outer_grid
+          %content
+            = yield
+        
+            - unless @sidebar == false
+              %sidebar
+                - unless @u
+                  %h2 Menu
                   %ul
-                    %li= link_to "Add a new agent", [:new, @g, :agent]
-              %h2 Search
-              %ul
-                %li= link_to "All Properties", :properties
-      .push_footer
-    %footer
-      #inner_footer.grid_content
-        © 2011 ClearProperty
+                    %li= link_to "List your property for sale or rent", [:new, :listing]
+                - else
+                  %h2
+                    - if @a
+                      #{@g.name}
+                    - else
+                      Menu
+                  %ul
+                    %li= link_to "New property", [:new, :listing]
+                    %li= link_to "Your properties", :listings
+                    %li= link_to "Agency properties", [@g, :listings]
+              
+                  - if admin?
+                    %h3 Admin
+                    %ul
+                      %li= link_to "Add a new agent", [:new, @g, :agent]
+                %h2 Search
+                %ul
+                  %li= link_to "All Properties", :properties
+
+      .push_sticky_footer
+      #outer_footer.sticky_footer_bottom_wrapper
+        .outer_grid
+          %footer
+            © 2011 ClearProperty
       = yield :scripts
