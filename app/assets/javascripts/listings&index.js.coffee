@@ -31,7 +31,7 @@ $('#go_search_address').click ->
           args: [bounds]
         $('#search_bounds').val bounds
       else
-        $('#no_results').html "No place or address found."
+        flashInlineError $('#new_search .error_container'), "No place or address found."
         $(@).gmap3
           action: 'fitBounds'
           args: [PI_BOUNDS]

@@ -11,27 +11,26 @@
     %ol
       %li Locate your property on the map by zooming in as close as possible.
       %li To zoom, double-click the map or use the zoom control. You can also zoom direclty to a place or address using the address search.
-      %li The marker represents your property's location. You can move it by clicking the map.
+      %li The marker represents your property's location. Move it by clicking the map.
       %li
         %strong Set the marker accurately. 
         Your property will be listed at the marker.
-      %li Provide a street address if you have one to help people locate your property.
+      %li If the property has a street address, please include it in the listing. 
 
-  #map_container
-    #map_canvas
-    #search_fields
-      #address
-        = f.input :address, label: "Address" do
-          = f.input_field :address, as: :text, placeholder: "Locate a place or address"
-        %button#search_zoom Search 
-        .error_container
-      = f.input :save_address, as: :boolean, hint: "Save the this address if it's accurate.", label: "Save address"
-      #position
-        = f.input :latitude, label: 'Marker latitude', as: :string, input_html: { autocomplete: 'off' }
-        = f.input :longitude, label: 'Marker longitude' do
-          = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
-        %button#position_zoom Zoom
-        .error_container
+  #map_canvas
+  #search_fields
+    #address
+      = f.input :address, label: "Address" do
+        = f.input_field :address, as: :text, placeholder: "Locate a place or address"
+      .error_container
+      %button#address_zoom.minor Search 
+    = f.input :save_address, as: :boolean, hint: "Save this address if it's accurate.", label: "Save as street address"
+    #position
+      = f.input :latitude, label: 'Marker latitude', as: :string, input_html: { autocomplete: 'off' }
+      = f.input :longitude, label: 'Marker longitude' do
+        = f.input_field :longitude, as: :string, input_html: { autocomplete: 'off' }
+      .error_container
+      %button#position_zoom.minor Zoom
     
   #everything_else
     %h3 Details

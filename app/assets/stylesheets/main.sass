@@ -19,11 +19,11 @@ $dark_blue: #003499
 $very_light_pink: #FEE5F4
 $very_light_blue: #F0F3FD
 $light_blue: #14BBEA
-$pink: #FF0080
 $gold: #FBAC0C
 $CP_BLUE: #0678BE
 $CP_BLUE_LT: tint($CP_BLUE, 25%)
 $CP_PINK: #FF0080
+$CP_PINK_LT: tint($CP_PINK, 25%)
 $land_green: #A5C888
 
 $light_orange: #FFE684
@@ -36,6 +36,10 @@ $error_red: red
 
 $grid_width: 960px
 
+// Additional resets
+
+textarea
+  resize: none
 
 // Sticky footer
 // http://ryanfait.com/sticky-footer/
@@ -75,7 +79,7 @@ header
 
 content
   +grid(16)
-  padding: 20px 0 220px 0
+  padding: 20px 0 60px 0
 
 footer
   text-align: center
@@ -84,7 +88,7 @@ footer
 
 a, a:visited
   text-decoration: none
-  color: $pink
+  color: $CP_PINK
 
 a:hover
   background: $gold
@@ -109,7 +113,7 @@ a:hover
   a span.c
     color: $CP_BLUE
   a span.p
-    color: $pink
+    color: $CP_PINK
   a:hover
     background: none
   h1
@@ -150,11 +154,22 @@ input[type='text'], input[type='submit'], select
 
 //// Forms
 
-input[type='submit'], button
-  +button(shiny, $CP_PINK) 
+input[type='submit'], a.button.path
+  +button(shiny, $CP_PINK_LT) 
 
-button
+button, a.button.local
   +button(shiny, $CP_BLUE_LT)
+
+input[type='submit'], button, a.button, a.button.path
+  font: bold 1em sans-serif
+
+.button.minor.local
+  padding: 0.4em 0.8em
+  font-size: 0.7em
+
+input[type='submit'].minor, button.minor, a.minor
+  padding: 0.4em 0.8em
+  font-size: 0.7em
 
 input[type='text'], textarea
   +border-radius(3px)
@@ -173,8 +188,16 @@ h4
 
 ////  ERROR HANDLING ////
 
+// For place holder for local validation errors
+// All this !important stuff is wrong but the styling is not
+// getting applied.  Need to work on this.
+.error_container
+  .error
+    padding: 0 !important
+    margin: 0 !important
+
 .error
-  color: $error_red
+  color: $error_red !important
 
 .error_messages
   *

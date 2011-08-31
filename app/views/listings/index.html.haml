@@ -7,9 +7,9 @@
 #left_column
   #list_exhort
     %strong
-      = link_to "List your property", [:new, :listing]
+      = link_to "List your property", [:new, :listing], class: 'button path'
       for free!
-  #find_exhort2
+  %label(for='listing_id')
     %strong Have a property ID?
   #map_canvas
   %ul#listings
@@ -25,7 +25,7 @@
       = f.hidden_field :bounds
       = f.hidden_field :center
       = f.hidden_field :zoom
-      #no_results
+      .error_container
       = f.text_field :address, placeholder: "Near place or address"
       %button#go_search_address Search
       #sale_or_rent
@@ -41,9 +41,9 @@
         -  Listing::RESIDENCE_TYPES.each do |type, label|
           = f.input type, label: label
         = f.input :land
-  #reset
-    %strong
-      = link_to "reset search", new_search_path
+    
+  %strong
+    = link_to "Reset Search", new_search_path, class: 'button minor local', id: 'reset_search'
 
 
 :coffeescript

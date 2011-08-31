@@ -51,14 +51,14 @@ $ ->
             value: item.formatted_address
             bounds: item.geometry.bounds
     open: ->
-      $('.ui-menu').width(210) 
+      $('.ui-menu').width(200) 
     select: (e, ui) ->
       bounds = new google.maps.LatLngBounds()
       map.fitBounds ui.item.bounds
       marker.setPosition map.getCenter()
 
 
-  $('#search_zoom').click ->
+  $('#address_zoom').click ->
     geocoder.geocode {
         address: $('#listing_address').val().replace(/\n/, ";") + '; Philippines' 
       }, (results, status) ->

@@ -41,11 +41,12 @@ body.listings--index
   #list_exhort
     +grid(7)
     +alpha
-  #find_exhort2
+  label[for='listing_id']
     +grid(4)
     +omega
     text-align: right
-  #find_exhort, #list_exhort, #find_exhort2
+  #list_exhort, 
+  label[for='listing_id']
     margin-bottom: 30px
     font-size: 1.1em    
 
@@ -54,11 +55,15 @@ body.listings--index
     top: -5px
     margin-bottom: 23px
   
-  #listing_id, #search_address
+  #listing_id, 
+  #search_address
     width: 180px 
   
-  #go_search_address, #find_listing_button
+  #go_search_address, 
+  #find_listing_button
     width: 80px
+  #go_search_address
+    padding-left: 13px
   
   #search 
     postion: relative
@@ -76,22 +81,17 @@ body.listings--index
       font-weight: bold
       margin: 30px 0 15px 0
   
-  #no_results
+  #new_search .error_container
     height: 14px
     font-size: 12px
     color: red
-    
+      
   #sale_or_rent
     margin-top: 25px
   
-  #reset
+  #reset_search
+    display: inline-block
     margin-top: 30px
-
-  #list_exhort
-    a
-      text-decoration: underline
-    a:hover
-      text-decoration: none
 
   #map_canvas
     height: 550px
@@ -139,18 +139,17 @@ body.listings--index
 body.listings--
   &new, &edit, &create
     
-    .error_messages, #map_instructions
-      +grid(16)
-      // +alpha
-      // +omega
+    .error_messages, 
+    #map_instructions
+      +grid(11)
+      +suffix(5)
+      +alpha
+      +omega
   
     #map_instructions
       li
         margin-bottom: 0.5em
         list-style: decimal
-
-    #map_container
-      +clearfix
 
     #map_canvas
       +grid(11)
@@ -162,27 +161,37 @@ body.listings--
       +grid(5)
       +omega
       
-      // #listing_address autocomplete results width is being set via jquery.
+    // #listing_address
+       .ui-menu
+         width: is set by jquery
 
-      #address, #position
-        button
-          float: right
-  
+    #address,
+    #position
+      .error_container
+        +grid(3)
+        +alpha
+        min-height: 1px
+        position: relative
+        left: 10px
+        top: 5px
+          
+      #address_zoom,
+      #position_zoom
+        +grid(2)
+        +omega
+        width: 64px
+        margin-left: 40px
+    
+      #address_zoom 
+        margin-bottom: 3em
+
       #listing_address
         height: 100px
-        resize: none
-    
-      #listing_save_address
-        margin-bottom: 30px
-    
-      .error_container
-        margin-top: 5px
-        height: 1.5em
-        .error
-          color: red
-          margin: 0
-          padding: 0
-          
+        margin-bottom: 1em
+
+    #listing_save_address
+      margin-bottom: 30px
+
     #everything_else
       +grid(11)
       +alpha
@@ -200,13 +209,18 @@ body.listings--
       +omega
     #listing_includes_land_values
       margin-bottom: 1em
-    #residence_fields, #land_fields
+    #residence_fields, 
+    #land_fields
       label
         +grid(3)
         +alpha
-    #listing_residence_type, #listing_residence_construction, #listing_residence_area, #listing_land_area
+    #listing_residence_type, 
+    #listing_residence_construction, 
+    #listing_residence_area, 
+    #listing_land_area
       width: 150px
-    #listing_residence_type, #listing_residence_construction
+    #listing_residence_type, 
+    #listing_residence_construction
       margin-bottom: 0.7em
 
     label[for='listing_description']
