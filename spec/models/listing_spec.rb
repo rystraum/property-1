@@ -82,7 +82,32 @@ describe Listing do
       listing.should_not be_valid
       (listing.errors.keys - Listing::REQUIRED_LAND_ATTRIBUTES).should == []
     end
-  end
+
+    it "should validate the format of latitude" do
+      listing = Fabricate :listing, latitude: "N 12.32"
+      listing.should be_valid
+      listing.latitude = -2.323
+      listing.should be_valid
+      listing.latitude = "N 234.23"
+      listing.should_not be_valid
+      listing.latitude = 234.23
+      listing.should_not be_valid
+      listing.errors[:latitude].should == ["is invalid"]
+    end
+
+    it "should validate the format of longitude" do
+      listing = Fabricate :listing, longitude: "E 12.32"
+      listing.should be_valid
+      listing.longitude = -2.323
+      listing.should be_valid
+      listing.longitude = "E 234.23"
+      listing.should_not be_valid
+      listing.longitude = 234.23
+      listing.should_not be_valid
+      listing.errors[:longitude].should == ["is invalid"]
+    end
+
+  end # validations
   
   it "when created should associate itself with a new property if a property association has not been specified" do
     listing = Fabricate :listing, property: nil
@@ -98,6 +123,16 @@ describe Listing do
     property = listing.property
     listing.destroy
     property.destroyed?.should be_true
+  end
+
+  it "should store an appropriately formatted string latitude as a float" do
+    listing = Fabricate :listing, latitude: "N 10.108982"
+    listing.latitude.should == 10.108982
+  end
+
+  it "should store an appropriately formatted string longitude as an integer" do
+    listing = Fabricate :listing, longitude: "W 121.3422"
+    listing.longitude.should == -121.3422
   end
   
   it "should know if it is for sale" do

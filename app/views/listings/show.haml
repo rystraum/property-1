@@ -1,4 +1,4 @@
-%h2= @listing.title
+%h2 ADD A TITLE
 
 -# Here's the syntax I want: 
 -# %p= link_to "Edit", [:edit, @listing] if current_user.can :edit, @listing
@@ -7,7 +7,6 @@
 %strong= listed_by(@listing)
 
 = show_for @listing do |f|
-  = f.attribute :title
 
   %h3 Location
   = f.attribute :latitude

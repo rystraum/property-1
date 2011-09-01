@@ -1,29 +1,33 @@
-$ ->
-  
-
-  #### _form ####
-  
   #### Map config
   
-  center = new google.maps.LatLng(12.2, 121.95)
+  maxZoomService = new google.maps.MaxZoomService()
+  geocoder = new google.maps.Geocoder
+
+  lat = $('#listing_latitude').val() || MAP_DEFAULT_CENTER_LAT
+  lng = $('#listing_longitude').val() || MAP_DEFAULT_CENTER_LNG
+  center = new google.maps.LatLng(lat, lng)
+
   mapOptions = 
     mapTypeId: google.maps.MapTypeId.HYBRID
     panControl: true
     center: center
-    zoom: 6
-    minZoom: 6
+    zoom: Number($('#listing_zoom').val()) || MAP_MIN_ZOOM
+    minZoom: MAP_MIN_ZOOM 
     scaleControl: true
     streetViewControl: false
   map = new google.maps.Map($('#map_canvas')[0], mapOptions)
-  maxZoomService = new google.maps.MaxZoomService()
-  geocoder = new google.maps.Geocoder
-  
+
+  marker = new google.maps.Marker
+    map: map
+    position: center
+
   
   #### Map events
   
   google.maps.event.addListener map, 'idle', ->
     $('#listing_latitude').val humanizeLat(marker.getPosition().lat().toFixed(5))
     $('#listing_longitude').val humanizeLng(marker.getPosition().lng().toFixed(5))
+    $('#listing_zoom').val map.getZoom() 
   
   google.maps.event.addListener map, 'click', (e) ->
     mapZoom = map.getZoom()
@@ -32,12 +36,8 @@ $ ->
         marker.setPosition e.latLng
         map.panTo e.latLng 
     ), 180
-    
-  marker = new google.maps.Marker
-    map: map
-    position: center
 
-  
+
   #### Map geocoding responses
   
   $('#listing_address').autocomplete

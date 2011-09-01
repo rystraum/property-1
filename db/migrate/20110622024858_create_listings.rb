@@ -9,6 +9,7 @@ class CreateListings < ActiveRecord::Migration
       t.string :address
       t.integer :land_area
       t.boolean :list_as_land, default: false
+      t.integer :zoom
       t.integer :residence_area
       t.string :residence_construction
       t.boolean :beach_front

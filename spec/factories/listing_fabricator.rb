@@ -3,6 +3,7 @@ Fabricator :listing do
   property!
   latitude -23.2
   longitude 88.4
+  zoom 11
   land_area 10004
   selling_price 239000
 end

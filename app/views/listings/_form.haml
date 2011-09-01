@@ -3,6 +3,7 @@
 - javascript 'listings&_form'
 
 = simple_form_for @listing do |f|
+  = f.hidden_field :zoom
 
   = f.error_messages
   
@@ -16,7 +17,7 @@
         %strong Set the marker accurately. 
         Your property will be listed at the marker.
       %li If the property has a street address, please include it in the listing. 
-
+  
   #map_canvas
   #search_fields
     #address
@@ -101,7 +102,6 @@
       = f.input :contact_phone, label: "Phone"
       = f.input :contact_email, label: "Email"
       = f.input :contact_note, label: "Any other information you want to add for this contact?"
-
 
     %h3 What is your interest in this property?
     = f.input :lister_interest, label: false, hint: "Are you the owner, an agent, a friend, etc?"

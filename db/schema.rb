@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20110723040032) do
     t.string   "address"
     t.integer  "land_area"
     t.boolean  "list_as_land",                     :default => false
+    t.integer  "zoom"
     t.integer  "residence_area"
     t.string   "residence_construction"
     t.boolean  "beach_front"

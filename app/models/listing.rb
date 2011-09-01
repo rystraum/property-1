@@ -7,7 +7,7 @@ class Listing < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :property
-  
+ 
   RENTAL_TERM_ATTRIBUTES = [:rent_per_day, :rent_per_week, :rent_per_month, :rent_per_month_biannual_contract, :rent_per_month_annual_contract]
   FOR_RENT_SQL = Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NOT NULL)"}.join(' OR ')
   NOT_FOR_RENT_SQL = Listing::RENTAL_TERM_ATTRIBUTES.map{ |a| "(#{a} IS NULL)"}.join(' OR ')
@@ -28,8 +28,9 @@ class Listing < ActiveRecord::Base
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]
 
-  validates_presence_of :user, :latitude, :longitude
+  validates_presence_of :user, :latitude, :longitude, :zoom
   validates_presence_of :property, on: :update
+  validates_numericality_of :zoom, only_integer: true, greater_than: 0
 
   with_options allow_blank: :true do |v|
     v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys
@@ -43,6 +44,8 @@ class Listing < ActiveRecord::Base
   validate :validates_presence_of_alt_contact_phone_or_email
   validate :validates_presence_of_required_residence_values
   validate :validates_presence_of_required_land_values
+  validate :validates_format_of_latitude
+  validate :validates_format_of_longitude
   
   after_create :create_property_if_none_found
   after_destroy :destroy_property_if_last_listing
@@ -52,6 +55,7 @@ class Listing < ActiveRecord::Base
   scope :not_for_rent, where(NOT_FOR_RENT_SQL)
   scope :exclude_land, where('residence_type IS NOT NULL')
   
+
   # For form handling.
   #
   attr_writer :includes_residence_values, :includes_land_values, :includes_alt_contact_values, :save_address
@@ -73,6 +77,15 @@ class Listing < ActiveRecord::Base
   end
   
   ###
+  
+  def latitude=(value)
+    self[:latitude] = extract_coordinate(value)
+  end
+
+  def longitude=(value)
+    self[:longitude] = extract_coordinate(value)
+  end
+      
   
   # TEST
   def has_residence?
@@ -147,4 +160,42 @@ class Listing < ActiveRecord::Base
     end
   end
 
+  def validates_format_of_latitude
+    if latitude.is_a? String
+      unless latitude =~ Geo::CARDINAL_&_NUMBER_LATITUDE_REGEX
+        errors.add(:latitude, "must be formatted like this N 10.0") 
+      else
+        lng = extract_float(latitude)
+        errors.add(:latitude, "is invalid") unless 0 <= lng and lng <= 90
+      end
+    else
+      errors.add(:latitude, "is invalid") unless latitude.is_a?(Numeric) and -90 < latitude and latitude < 90
+    end
+  end
+
+  def validates_format_of_longitude
+    if longitude.is_a? String
+      unless longitude =~ Geo::CARDINAL_&_NUMBER_LONGITUDE_REGEX 
+        errors.add(:longitude, "must be formatted like this: E 120.1")
+      else
+        lng = extract_float(longitude) 
+        errors.add(:longitude, "is invalid") unless 0 <= lng and lng <= 180
+      end
+    else
+      errors.add(:longitude, "is invalid") unless longitude.is_a?(Numeric) and -180 < longitude and longitude < 180
+    end
+  end
+
+  def extract_float(string)
+    string.scan(/\d+\.?\d*/).first.to_f
+  end
+
+  def extract_coordinate(value)
+    if value.is_a? String
+      num = extract_float(value)
+      value =~ /[WwSs]/ ? -num : num
+    else
+      value
+    end
+  end
 end
