@@ -171,20 +171,24 @@ input[type='submit'].minor, button.minor, a.minor
   padding: 0.4em 0.8em
   font-size: 0.7em
 
-input[type='text'], textarea
+input[type='text'], 
+input[type='tel'],
+input[type='email'],
+textarea
   +border-radius(3px)
-
-input[type='text']
   padding: 5px
 
 //// Typography
 
 h3, h4
   color: $CP_BLUE
+h3
+  margin-bottom: 0.3em
 h4
-  font-weight: normal
-  margin-bottom: 0
+  margin-bottom: 0 
 
+strong
+  color: $CP_BLUE
 
 ////  ERROR HANDLING ////
 

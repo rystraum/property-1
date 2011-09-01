@@ -1,30 +1,20 @@
 @import 'grid-960'
 
+=stacked-label
+  label
+    position: static
+
 $very_light_gray: #F3F3F3
 $light_gray: #D2D2D2
 $med_gray: gray
 $dark_gray: #323232
 
-$CP_PINK: #FF0080
 $CP_BLUE: #0678BE
+$CP_BLUE_LT: tint($CP_BLUE, 25%)
+$CP_PINK: #FF0080
+$CP_PINK_LT: tint($CP_PINK, 25%)
 
-
-
-// Temp
-// li, ul
-  // margin: 0
-  // padding: 0
-// li
-  // list-style: none
-
-// ul.tags
-  // li
-    // background: gray
-    // color: white
-    // display: inline-block
-    // padding: 3px
-    // font-size: 0.9em
-  
+$COLOR_HINT: $CP_BLUE_LT
 
 body.listings--index
 
@@ -132,6 +122,24 @@ body.listings--index
         font-weight: bold
         color: $CP_BLUE
         margin-bottom: 10px 
+
+
+
+body.listings--show
+
+  li, ul
+    margin: 0
+    padding: 0
+  li
+    list-style: none
+
+  ul.tags
+    li
+      background: gray
+      color: white
+      display: inline-block
+      padding: 3px
+      font-size: 0.9em
   
 
 
@@ -139,31 +147,51 @@ body.listings--index
 body.listings--
   &new, &edit, &create
     
-    .error_messages, 
-    #map_instructions
+    form.listing
       +grid(11)
       +suffix(5)
       +alpha
       +omega
-  
+    
+    fieldset
+      +grid(10)
+      +alpha
+      +prefix(1)
+      legend
+        +pull(1)
+      label
+        +grid(2)
+
+    #map_container
+      +grid(16)
+      +alpha
+      +omega
+      +clearfix
+
     #map_instructions
       li
         margin-bottom: 0.5em
-        list-style: decimal
+        list-style: disc
 
     #map_canvas
       +grid(11)
       +alpha
       height: 550px
       background: $very_light_gray
+      margin-bottom: 30px
 
     #search_fields
       +grid(5)
       +omega
+      +stacked-label
       
-    // #listing_address
+    // Set with JS:
+    // #listing_address 
        .ui-menu
-         width: is set by jquery
+    
+    #address
+      > div
+        margin-top: 0
 
     #address,
     #position
@@ -187,28 +215,32 @@ body.listings--
 
       #listing_address
         height: 100px
-        margin-bottom: 1em
+
+    #listing_address,
+    #listing_longitude
+      margin-bottom: 1em
 
     #listing_save_address
       margin-bottom: 30px
 
-    #everything_else
-      +grid(11)
-      +alpha
-
     #listing_contains
-      +clearfix
-      margin-bottom: 2em
+      +grid(4)
+      +alpha
 
-    #residence_values
-      +grid(3)
-      +alpha
-    #land_values
-      +grid(8)
-      +alpha
-      +omega
-    #listing_includes_land_values
-      margin-bottom: 1em
+    #options_for_listing_contains
+      +grid(7)
+      padding: 0
+      list-style: none
+      margin: 0
+      li
+        margin-bottom: 0.5em
+      #list_as_land
+        .hint
+          font-size: 0.9em
+          padding-left: 1.3em
+          margin-bottom: 0.3em
+          color: $CP_BLUE
+
     #residence_fields, 
     #land_fields
       label
@@ -219,28 +251,26 @@ body.listings--
     #listing_residence_area, 
     #listing_land_area
       width: 150px
-    #listing_residence_type, 
-    #listing_residence_construction
-      margin-bottom: 0.7em
 
     label[for='listing_description']
       margin-top: 2em
     
-    #rental_rates label, 
-    label[for='listing_selling_price'], 
-    label[for='listing_available_on_1i']
+    #rental_rates label 
       +grid(3)
       +alpha
+    label[for='listing_selling_price'], 
+    label[for='listing_available_on_1i']
+      +grid(4)
+      +alpha
+
 
     #rental_rates input, 
     #listing_selling_price, 
       width: 120px
 
     #listing_rent_per_month_biannual_contract
-      margin-bottom: 2em
+      margin-bottom: 1em
 
-    #listing_anonymous
-      margin-bottom: 1.5em
     #contact_fields 
       #listing_contact_phone,
       #listing_contact_email
@@ -259,3 +289,14 @@ body.listings--
         margin-top: 2em
       #listing_contact_note
         height: 200px
+
+    // Inputs that are followed by text need...
+    #listing_rent_per_month_annual_contract,
+    #listing_land_area,
+    #listing_list_as_land,
+    #listing_contact_name
+      margin-bottom: 1.5em
+    
+    // Labels are postioned relatively lower for display in line with a text field.  Text fields with the label stacked on top need this offset removed.
+    label[for='listing_lister_interest']
+      position: static !important

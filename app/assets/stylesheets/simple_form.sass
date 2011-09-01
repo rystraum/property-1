@@ -5,10 +5,6 @@ $CP_BLUE: #0678BE
 
 .simple_form 
     
-  input.string 
-    margin-bottom: 15px
-  
-  
   // The required astrisk
   abbr[title='required'] 
     border-bottom: none
@@ -19,22 +15,21 @@ $CP_BLUE: #0678BE
   
 
   fieldset 
-    border-top: solid 1px silver
-    padding-top: 10px
-    margin-top: 10px
+    margin-top: 1em
   
 
   legend 
     font-weight: bold
     color: $CP_BLUE
   
+  label
+    color: $INSTRUCTION_COLOR
+    font-weight: bold
+
   label.boolean 
     font-weight: normal
+    color: inherit
   
-  div.boolean
-    padding: 0.5em 0 0.5em 0
-
-
   div.boolean label, label.collection_radio 
     float: none
     margin: 0
@@ -45,22 +40,17 @@ $CP_BLUE: #0678BE
     vertical-align: -2px
     margin-left:   2px
 
-
-
-
   label.collection_check_boxes 
     float: none
     margin: 0
     vertical-align: -2px
     margin-left:   2px
 
-
   textarea, input.string 
     width: 98%
   
   input[type='submit']
     margin-top: 4em
-
   
   input.radio 
     margin-right: 5px
@@ -70,6 +60,15 @@ $CP_BLUE: #0678BE
   input.check_boxes 
     margin-left: 3px
     vertical-align: -3px
+
+  .input
+    margin-top: 1.5em
+  div.input.boolean.optional
+    margin-top: 0.5em
+  .input.string
+    label
+      position: relative
+      top: 0.4em
 
   .error 
     clear:   left
@@ -93,20 +92,27 @@ $CP_BLUE: #0678BE
     
   
 
-  .input .hint 
+  .hint 
     clear: left
-    font-size: 0.95em
-    padding-bottom: 7px
-    color: $INSTRUCTION_COLOR
+    font-size: 0.9em
+    color: $CP_BLUE
     display: block
-  
-
-  div.boolean 
-    maring-left: 10px
-  
+  div.input.boolean
+    .hint
+      padding-left: 1.35em
+      margin-bottom: 0.3em
 
   h3
-    margin-top: 2em
+    margin-top: 2.5em
+    margin-bottom: 1em
+    border-bottom: solid 1px silver
+  h4
+    margin-top: 1.5em 
+    font-weight: bold
+
+  fieldset
+    legend
+      margin-top: 1.5em
   
 
 
