@@ -1,7 +1,6 @@
-class CurrencyInput < SimpleForm::Inputs::StringInput
-  
+class CurrencyInput < SimpleForm::Inputs::Base
   def input
-    "PhP #{super}".html_safe
+    "<span class='unit'>PhP</span> #{@builder.text_field(attribute_name, input_html_options)}".html_safe
   end
-  
-end
+end   
+

@@ -21,14 +21,17 @@ gem 'geocoder', path: '~/dev/opensource/geocoder'
 gem 'cancan'
 gem 'nilify_blanks'
 
-gem 'ruby-debug19', :require => 'ruby-debug'
+# gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'kaminari'
 gem 'haml-rails'
 gem 'rails3-generators', :group => :development
 
+group :test, :development do
+  gem 'pry'
+  gem 'growl'
+  gem 'rspec-rails'
+end
 
-gem 'growl', group: [:test, :development]
-gem 'rspec-rails', group: [:test, :development]
 group :test do
   gem 'fabrication'
   gem 'faker'

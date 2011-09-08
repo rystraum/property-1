@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def m2
-    "m<sup>2</sup>".html_safe
+    "<span class='unit'>m<sup>2</sup></span>".html_safe
   end
     
 end

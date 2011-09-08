@@ -1,9 +1,10 @@
--# - content_for :head do
-  -# = gmaps_script_tag
--# - javascript 'listings&_form'
+- content_for :head do
+  = gmaps_script_tag
+- javascript 'listings&_form'
 
 = simple_form_for @listing do |f|
   = f.hidden_field :zoom
+  = f.hidden_field :property_id
 
   = f.error_messages
   
@@ -25,7 +26,7 @@
           = f.input_field :address, as: :text, placeholder: "Locate a place or address"
         .error_container
         %button#address_zoom.minor Search 
-      = f.input :save_address, as: :boolean, hint: "If the property has a street address, enter it above and check this box. The property will still be listed at the marker, so don't worry if the address search doesn't locate it.", label: "Save as street address"
+      = f.input :save_address, as: :boolean, hint: "If the property has a street address, enter it above and check this box. It's ok if the address search doesn't locate it. Just be sure the marker is set accurately.", label: "Save as street address"
       #position
         = f.input :latitude, label: 'Marker latitude', as: :string, input_html: { autocomplete: 'off' }
         = f.input :longitude, label: 'Marker longitude' do
@@ -68,13 +69,13 @@
      
   %h3 For Sale
   Add a selling price if the property is for sale. Prices are in Philippines pesos.
-  = f.input :selling_price, as: :string, input_html: { maxlength: 11 }
+  = f.input :selling_price, as: :currency, input_html: { maxlength: 11 }
 
   %h3 For Rent
   Add one or more rental rates if the property is for rent. Leave blank any that you do not want to offer. Prices are in Philippine pesos.
   %fieldset#rental_rates
     %legend Rental Rates
-    - f.with_options as: :string, input_html: { maxlength: 7 } do |w|
+    - f.with_options as: :currency, input_html: { maxlength: 7 } do |w|
       = w.input :rent_per_day, label: "Daily"
       = w.input :rent_per_week, label: "Weekly"
       = w.input :rent_per_month, label: "Monthly"
@@ -91,9 +92,7 @@
   = f.input :includes_alt_contact_values, as: :boolean, label: "Listing has an alternate contact", hint: "Check this box if somone other than you is the contact for this property."
   #contact_fields
     = f.input :anonymous, label: "Hide your own contact details and only show the alternate"
-    = f.input :contact_name, label: "Name"
-    %abbr(title='required') *
-    Please provide a phone number or an email address.
+    = f.input :contact_name, label: "Name", required: true
     = f.input :contact_phone, label: "Phone"
     = f.input :contact_email, label: "Email"
     = f.input :contact_note, label: "Any other information you want to add for this contact?"
