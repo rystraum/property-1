@@ -57,17 +57,16 @@ describe Listing do
         (listing.errors.keys - Listing::REQUIRED_RESIDENCE_ATTRIBUTES).should == []
       end
       
-      it "should not be valid when one is missing" do
+      it "should fail if one residence attribute is present but others are missing" do
         listing = Fabricate.build :listing, includes_residence_values: false
         listing.should be_valid
         
-        listing.residence_area = 100
-        missing_attributes = Listing::REQUIRED_RESIDENCE_ATTRIBUTES - [:residence_area]
+        listing.residence_type = Listing::RESIDENCE_TYPES.keys.first
         listing.should_not be_valid
-        (listing.errors.keys - missing_attributes).should == []
+        listing.errors.size.should == Listing::REQUIRED_RESIDENCE_ATTRIBUTES.length - 1
       end
       
-      it "should be valid when all are present, even when residence values specified as not included" do
+      it "should pass when all are present, even when residence values specified as not included" do
         listing = Fabricate.build :residence_listing, includes_residence_values: false
         listing.should be_valid
       end

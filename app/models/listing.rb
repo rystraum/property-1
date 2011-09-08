@@ -28,9 +28,13 @@ class Listing < ActiveRecord::Base
   REQUIRED_RESIDENCE_ATTRIBUTES = [:residence_type, :residence_construction, :residence_area]
   REQUIRED_LAND_ATTRIBUTES = [:land_area]
 
-  validates_presence_of :user, :latitude, :longitude, :zoom
+  validates_presence_of :user, :latitude, :longitude
   validates_presence_of :property, on: :update
-  validates_numericality_of :zoom, only_integer: true, greater_than: 0
+  # TODO: Renable.  Currently disabled for dev without net access.
+  # Also, this shouldn't give UI error because this is not something the user controls.  It
+  # should either raise an exception, or log an error.  Probably raise, because logic is
+  # broken if zoom not included.
+  # validates_numericality_of :zoom, only_integer: true, greater_than: 0
 
   with_options allow_blank: :true do |v|
     v.validates_inclusion_of :residence_construction, in: RESIDENCE_CONSTRUCTIONS.keys
@@ -39,11 +43,10 @@ class Listing < ActiveRecord::Base
     v.validates_numericality_of *RENTAL_TERM_ATTRIBUTES, :selling_price, integer_only: true, greater_than: 0
   end
   
-  validate :validates_presence_of_residence_or_land
+  validate :validates_presence_of_a_category
+  validate :validates_presence_of_category_required_attributes 
   validate :validates_for_sale_or_rent
   validate :validates_presence_of_alt_contact_phone_or_email
-  validate :validates_presence_of_required_residence_values
-  validate :validates_presence_of_required_land_values
   validate :validates_format_of_latitude
   validate :validates_format_of_longitude
   
@@ -115,6 +118,11 @@ class Listing < ActiveRecord::Base
   
 
   protected
+
+  def validates_presence_of_category_required_attributes
+    validates_presence_of_required_residence_attributes if has_residence?
+    validates_presence_of_required_land_attributes if has_land?
+  end
   
   # TODO: If very nearby properties exist, the UI needs to give the user an opportunity to determine if one of these
   #       is the same property. Selecting it will apply the property ID to this listing.
@@ -140,23 +148,21 @@ class Listing < ActiveRecord::Base
     end
   end
   
-  def validates_presence_of_residence_or_land
+  def validates_presence_of_a_category
     unless includes_residence_values || includes_land_values
       errors.add(:base, "Listing must include a residence or land.")
     end
   end
   
-  def validates_presence_of_required_residence_values
-    return unless includes_residence_values
+  def validates_presence_of_required_residence_attributes
     REQUIRED_RESIDENCE_ATTRIBUTES.each do |a|
-      errors.add(a, "is required for a residence listing.") unless send a
+      errors.add(a, "is required for a residence listing.") if send(a).blank?
     end
   end
   
-  def validates_presence_of_required_land_values
-    return unless includes_land_values
+  def validates_presence_of_required_land_attributes
     REQUIRED_LAND_ATTRIBUTES.each do |a|
-      errors.add(a, "is required for a land listing.") unless send a
+      errors.add(a, "is required for a land listing.") if send(a).blank?
     end
   end
 
