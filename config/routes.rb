@@ -26,8 +26,6 @@ Site::Application.routes.draw do
   #   resources :listings, controller: 'agencies/listings', only: [:index, :show]
   # end
 
-  resources :properties, only: [:index, :show]
-  
   root to: "listings#index"
 
   # Sample of regular route:

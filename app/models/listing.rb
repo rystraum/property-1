@@ -46,7 +46,7 @@ class Listing < ActiveRecord::Base
   validate :validates_presence_of_a_category
   validate :validates_presence_of_category_required_attributes 
   validate :validates_for_sale_or_rent
-  validate :validates_presence_of_alt_contact_phone_or_email
+  validate :validates_presence_of_alt_contact_required_attributes
   validate :validates_format_of_latitude
   validate :validates_format_of_longitude
   
@@ -101,7 +101,7 @@ class Listing < ActiveRecord::Base
   end
   
   def has_alt_contact?
-    !!(contact_phone || contact_email)
+    !contact_name.blank?
   end
   
   def for_sale?
@@ -136,9 +136,14 @@ class Listing < ActiveRecord::Base
     property.destroy if property.listings.count == 0
   end
 
-  def validates_presence_of_alt_contact_phone_or_email
-    if includes_alt_contact_values && !has_alt_contact?
-      errors.add(:base, "Alternate contact must have a phone number or email.")
+  def validates_presence_of_alt_contact_required_attributes
+    return if [:contact_name, :contact_phone, :contact_email].all? { |a| send(a).blank? }
+    if contact_name.present?
+      if contact_phone.blank? && contact_email.blank?
+        errors.add(:base, "Contact must have a phone number or email.")
+      end
+    else
+      errors.add(:contact_name, "cannot be blank.")
     end
   end
   

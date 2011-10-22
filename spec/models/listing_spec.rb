@@ -7,15 +7,21 @@ describe Listing do
     listing.should be_valid
   end
   
-  describe "validations" do
-    it "should validate that an alt contact phone or email exists if an alt contact is specified" do
-      listing = Fabricate.build :listing, includes_alt_contact_values: true, contact_phone: nil, contact_email: nil
-      
+  describe "validation" do
+    it "should fail when an alt contact is specified but no contact info is included" do
+      listing = Fabricate.build :listing, includes_alt_contact_values: true, contact_name:nil, contact_phone: nil, contact_email: nil
       listing.should_not be_valid
-      listing.errors[:base].should == ["Alternate contact must have a phone number or email."]
-      
-      listing.contact_email = "gavin@gavin.com"
-      listing.should be_valid
+    end
+
+    it "should fail if an alt contact attribute is specified but it's missing the contact name or both phone and email" do
+      listing = Fabricate.build :listing, contact_email: "bob@bob.com"
+      listing.should_not be_valid
+      listing.errors[:base].should == ["Contact name cannot be blank."]
+
+      listing.contact_email = nil
+      listing.contact_name = "Bob"
+      listing.should_not be_valid
+      listing.errors[:base].should == ["Contact must have a phone number or email."]
     end
     
     it "should validate presence of either a selling price or a rental rate" do
